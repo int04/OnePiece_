@@ -1,0 +1,29 @@
+{
+  "__version__": "1.0.6",
+  "layer": [
+    {
+      "name": "UI",
+      "value": 1
+    }
+  ],
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "nhanvat"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 1,
+      "1": 2
+    }
+  },
+  "custom_joint_texture_layouts": [],
+  "general": {
+    "designResolution": {
+      "fitHeight": false,
+      "fitWidth": true
+    },
+    "highQuality": false
+  }
+}

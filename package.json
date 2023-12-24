@@ -1,0 +1,14 @@
+{
+  "name": "HaiTacOnline",
+  "uuid": "d6735c6a-edcc-4d50-be3c-d9a7781350e1",
+  "creator": {
+    "version": "3.8.1"
+  },
+  "dependencies": {
+    "crypto-ts": "^1.0.2",
+    "protobufjs": "^7.2.5",
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "socket.io-msgpack-parser": "^3.0.2"
+  }
+}

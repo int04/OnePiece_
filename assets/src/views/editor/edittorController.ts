@@ -6,6 +6,23 @@ import {randomString} from "db://assets/src/engine/sys";
 import {XHR} from "db://assets/src/engine/draw";
 const { ccclass, property } = _decorator;
 
+let fetchCurl = (url, action:Function = null) => {
+    let link =  cache.home + url;
+    return new Promise((res, fai) => {
+        fetch(link)
+            .then((response) => {
+                if(action) action();
+                return response.json();
+            })
+            .then((data) => {
+                res(data);
+            })
+            .catch((err) => {
+                fai(err);
+            });
+    });
+}
+
 @ccclass('edittorController')
 export class edittorController extends Component {
     @property({
@@ -17,58 +34,6 @@ export class edittorController extends Component {
     })
     private buttonMenu : Node = null;
 
-    private insertDemo():void {
-        cache.images.push({
-            id : 1,
-            name : 'quan',
-            actions: {
-                dungyen: [["10272"],[0,0]],
-            }
-        })
-        cache.images.push({
-            id : 2,
-            name : 'lung',
-            actions: {
-                dungyen: [["10051"],[0,0]],
-            }
-        })
-        cache.images.push({
-            id : 'zxcv',
-            name : 'ao',
-            actions: {
-                dungyen: [["10449"],[13,3.89]],
-            }
-        })
-        cache.images.push({
-            id : 'zxccxz',
-            name : 'tay',
-            actions: {
-                dungyen: [["10044"],[43,-16]],
-            }
-        })
-        cache.images.push({
-            id : 'zxc44',
-            name : 'dau',
-            actions: {
-                dungyen: [["10000"],[13,58]],
-            }
-        })
-        cache.images.push({
-            id : 'zxcccv5345',
-            name : 'toc',
-            actions: {
-                dungyen: [["10005"],[13,67]],
-            }
-        })
-
-        cache.images.push({
-            id : 'zxcccv5345',
-            name : 'mu',
-            actions: {
-                dungyen: [["10250"],[13,67]],
-            }
-        })
-    }
     public action: string = '';
     public objectID: string = '';
     public list: object = {};
@@ -86,35 +51,41 @@ export class edittorController extends Component {
         let path = find("edit/ScrollView");
         path.active = !path.active;
     }
-    start() {
+     start() {
         this.buttonMenu.on(NodeEventType.TOUCH_START, this.eventButtonMenu, this);
         let src: any = cache.resource;
         let downloaded: number = 0;
         let promise:any = [];
         src.forEach((item: String) => {
-            let url: String = './assets/package/' + item + '.json?v=' + cache.info.version;
+            let url: String = './assets/package/' + item + '.json?v=' + Date.now()
             promise.push(
-                XHR(url, () => {
+                fetchCurl(url, () => {
                     downloaded++;
                 })
             )
         });
         console.log(src)
         let all = Promise.all(promise);
-        all.then((callback) => {
-            callback.forEach((item: String, index:number) => {
-                let data:any = callback[index].json
+        all.then(async(callback) => {
+            callback.forEach( (item: String, index:number) => {
+                let data:any = callback[index]
                 cache.images = cache.images.concat(data);
             })
-            this.list = {
-                ao : 'lETxXc94Cy',
+
+            /*/
+            // luffy:
+            ao : 'lETxXc94Cy',
                 quan : 'TIo6aWotHG',
                 lung : 'gr0VkEI8d5',
                 tay : 'f8EGgmi32Z',
                 dau : 'okeR9y6ukZ',
                 toc : 'yGgXC0kOnB',
                 mu : '1o0381F8Ia',
-            }
+
+            */
+
+
+            this.list = await fetchCurl('package/sprite.json?delta='+Date.now());
             this.MoveCamera();
             // this.insertDemo();
             this.createSprite();
@@ -357,6 +328,16 @@ export class edittorController extends Component {
                 y--;
             }
             action[1] = [x,y];
+
+            // if action = mu, toc, dau move all
+            if(this.objectID === 'mu' || this.objectID === 'toc' || this.objectID === 'dau') {
+                for(let nameob in images.actions) {
+                    let action2 = images.actions[nameob];
+
+                    action2[1] = action[1]
+                }
+            }
+
         }
     }
 

@@ -16,12 +16,34 @@ export class imagesController extends Component {
         this.time = Date.now();
     }
 
+    public copyToClipboard(str: string): void {
+        let el = document.createElement('textarea');
+        el.value = str;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        let selected =
+            document.getSelection().rangeCount > 0
+                ? document.getSelection().getRangeAt(0)
+                : false;
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        if (selected) {
+            document.getSelection().removeAllRanges();
+            document.getSelection().addRange(selected);
+        }
+
+    }
+
     ClickImagesEND(): void {
         if(Date.now() - this.time < 200) {
             let parent = find("edit/listimg");
             let name = this.node.getParent().name
             let path = find("edit/listimg");
             path.getComponent(resourceController).callbackname(name);
+            this.copyToClipboard(name);
         }
     }
 

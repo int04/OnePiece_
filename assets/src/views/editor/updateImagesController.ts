@@ -23,7 +23,10 @@ export class updateImagesController extends Component {
     clickbtn():void {
         let value = this.input.getComponent(EditBox).string;
         let oldname = this.oldName.name;
-        if(value.length <=0) alert('Vui lòng nhập ảnh')
+        if(value.length <1)  {
+            alert('Vui lòng nhập ảnh')
+            return;
+        }
         let parent = find("edit/ScrollView");
         parent.getComponent(repaceController).updateChange(oldname,value);
     }

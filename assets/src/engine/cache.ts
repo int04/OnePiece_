@@ -1,8 +1,8 @@
 import { view  } from 'cc';
 
 let cache :any = {
-    path : 'http://192.168.1.139:27620/res/int04/',
-    home : 'http://192.168.1.139:27620/res/',
+    path : 'http://localhost:5555/res/int04/',
+    home : 'http://localhost:5555/res/',
     key : {},
     game : {
         width : view.getFrameSize().width,
@@ -13,7 +13,7 @@ let cache :any = {
         server : null,
         version : null,
     },
-    resource: ['luffy'],
+    resource: ['luffy','ao','quan','toc','mu','tay','lung','dau'],
 }
 
 export default  cache

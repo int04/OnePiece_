@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Layout,  ScrollView, find, instantiate, Sprite , Label} from 'cc';
+import { _decorator, Component, Node, Layout,  ScrollView, find, instantiate, Sprite , Label, NodeEventType} from 'cc';
 const { ccclass, property } = _decorator;
 import {coverSpriteFrame, XHR} from "db://assets/src/engine/draw";
 import {edittorController} from "db://assets/src/views/editor/edittorController";
@@ -58,6 +58,23 @@ export class resourceController extends Component {
         this.updateImg();
         this.button.on(Node.EventType.TOUCH_START, this.ClickChonNhanh, this);
         this.reload.on(Node.EventType.TOUCH_START, this.updateImg, this);
+
+        let path = find("edit/listimg/ScrollView/view/content");
+
+        path.on(NodeEventType.MOUSE_WHEEL, (event) => {
+            let pos = path.getPosition();
+            let scale =path.getScale();
+            let delta = event.getScrollY();
+            if(delta > 0) {
+                scale.x *= 1.1;
+                scale.y *= 1.1;
+            } else {
+                scale.x /= 1.1;
+                scale.y /= 1.1;
+            }
+            path.setScale(scale);
+        });
+
     }
 
     callbackname(name: string) : void {

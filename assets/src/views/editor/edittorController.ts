@@ -12,6 +12,11 @@ export class edittorController extends Component {
         type: Node
     })
     private camera : Node = null;
+    @property({
+        type: Node
+    })
+    private buttonMenu : Node = null;
+
     private insertDemo():void {
         cache.images.push({
             id : 1,
@@ -77,7 +82,12 @@ export class edittorController extends Component {
         mu : false,
     }
 
+    eventButtonMenu():void {
+        let path = find("edit/ScrollView");
+        path.active = !path.active;
+    }
     start() {
+        this.buttonMenu.on(NodeEventType.TOUCH_START, this.eventButtonMenu, this);
         let src: any = cache.resource;
         let downloaded: number = 0;
         let promise:any = [];

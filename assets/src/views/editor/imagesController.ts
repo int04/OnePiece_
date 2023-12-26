@@ -47,9 +47,6 @@ export class imagesController extends Component {
         }
     }
 
-    update(deltaTime: number) {
-        
-    }
 }
 
 

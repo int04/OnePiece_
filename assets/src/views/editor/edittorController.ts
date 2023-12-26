@@ -160,6 +160,7 @@ export class edittorController extends Component {
 
     clickObjectHide(name : string):void {
         this.hide[name] = !this.hide[name];
+        this.updateShowHide();
     }
 
     clickObject(name: string): void {
@@ -428,11 +429,20 @@ export class edittorController extends Component {
 
     }
 
-    update(deltaTime: number) {
+    public updateShowHide():void {
         for(let name in this.hide) {
             let node = find("edit/Layout/"+name);
             node.active = this.hide[name];
         }
+    }
+
+    private timeUpdate: number = 0;
+    update(deltaTime: number) {
+        this.timeUpdate += deltaTime;
+        if(this.timeUpdate <=5) return false;
+        this.timeUpdate = 0;
+
+        this.updateShowHide();
     }
 }
 

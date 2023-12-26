@@ -123,9 +123,6 @@ export class resourceController extends Component {
 
     }
 
-    update(deltaTime: number) {
-        
-    }
 }
 
 

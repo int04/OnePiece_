@@ -28,12 +28,18 @@ export class spriteController extends Component {
         this.body.setPosition(pos);
     }
 
+    private  timeUpdate: number = 0;
     update(deltaTime: number) {
         this.time += deltaTime;
         if(this.time >=0.5) {
             this.time = 0;
             this.updatedSprite();
         }
+        this.timeUpdate += deltaTime;
+        if(this.timeUpdate <=2) {
+            return;
+        }
+        this.timeUpdate = 0;
         let parent = this.node.getParent();
         let hide = parent.getComponent(edittorController).hide;
         for(let name in hide)

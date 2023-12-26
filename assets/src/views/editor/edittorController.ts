@@ -141,11 +141,14 @@ export class edittorController extends Component {
             });
 
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.KEY_DOWN, this);
+            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.UPNOW, this);
             this.event222()
             this.createEventClickObjectFast();
         })
 
     }
+
+
 
     updateImagesFromClick(name:string): void {
         if(this.action === '') return;
@@ -305,6 +308,13 @@ export class edittorController extends Component {
         doituong.getComponent(Label).string = nameobject + "_change";
     }
 
+    UPNOW(event):void {
+        let key = event.keyCode;
+        this.encodeJson();
+        if(key ===9) {
+             this.nextObject();
+        }
+    }
     KEY_DOWN(event):void {
         this.encodeJson();
         if(this.action === '' || this.objectID === '') return;

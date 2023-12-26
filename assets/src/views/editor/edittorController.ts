@@ -226,9 +226,11 @@ export class edittorController extends Component {
 
         let x = data[1][0];
         let y = data[1][1];
+        let scale = data[2] || 0.65;
 
         find("edit/form/x").getComponent(EditBox).string = x;
         find("edit/form/y").getComponent(EditBox).string = y
+        find("edit/form/scale").getComponent(EditBox).string = scale;
 
 
     }
@@ -239,6 +241,7 @@ export class edittorController extends Component {
         let x = find("edit/form/x").getComponent(EditBox).string;
         let y = find("edit/form/y").getComponent(EditBox).string;
         let list = find("edit/form/list").getComponent(EditBox).string;
+        let scale = find("edit/form/scale").getComponent(EditBox).string || 0.65;
         let listArray = list.split(',');
         let listArray2 = [];
         listArray.forEach(e => {
@@ -247,6 +250,19 @@ export class edittorController extends Component {
         let data = getImages(this.list[objectID], action);
         data[0] = listArray2;
         data[1] = [x,y];
+        data[2] = scale * 1
+
+        let images = cache.images.find(e => e.name == this.list[objectID]);
+        // if action = mu, toc, dau move all
+        if(objectID === 'mu' || objectID === 'toc' || objectID === 'dau') {
+            for(let nameob in images.actions) {
+                let action2 = images.actions[nameob];
+
+                action2[1] = data[1];
+                action2[2] = data[2];
+
+            }
+        }
 
         this.encodeJson();
         this.encodeJsonObject(objectID);

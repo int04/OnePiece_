@@ -60,11 +60,12 @@ export class spriteObjectController extends Component {
             this.num++;
         }
 
+        let scale = data[2] || this.scale;
         coverSpriteFrame(frame).then((spriteFrame) => {
             let size = spriteFrame.getOriginalSize();
             let sizeSprite = this.node.getComponent(UITransform);
             sizeSprite.setContentSize(size);
-            this.node.setScale(this.scale, this.scale);
+            this.node.setScale(scale,scale);
             // set new frame
             this.node.getComponent(Sprite).spriteFrame = spriteFrame;
             this.node.setPosition(x, y);

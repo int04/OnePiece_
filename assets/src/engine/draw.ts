@@ -1,4 +1,4 @@
-import { _decorator, native, UITransform, UIOpacity, assetManager, find} from 'cc';
+import { _decorator, native, UITransform, UIOpacity, assetManager, find, SpriteFrame, Texture2D} from 'cc';
 import cache from "db://assets/src/engine/cache";
 import {tool} from "db://assets/src/engine/tool";
 import {node} from "db://assets/src/engine/canvas";
@@ -26,15 +26,15 @@ let coverImg = async (url: string, path = null) => {
         }
         let name = fullurl.split('/').pop();
         // check is exist
-        let isExist = cc.assetManager.assets.get(name);
+        let isExist = assetManager.assets.get(name) as Texture2D;
         if(isExist) {
             return res(isExist)
         }
-        cc.assetManager.loadRemote(fullurl, (err, images) => {
+        assetManager.loadRemote(fullurl, (err, images) => {
             // cover to texture
-            let texture = new cc.Texture2D();
+            let texture = new Texture2D();
             texture.image = images;
-            cc.assetManager.assets.add(name, texture);
+            assetManager.assets.add(name, texture);
             res(texture);
         });
     })
@@ -43,9 +43,18 @@ let coverImg = async (url: string, path = null) => {
 export let coverSpriteFrame = async (url: string, path = null) => {
     return new Promise( async (res, fai) => {
         let texture = await coverImg(url, path);
-        const spriteFrame = new cc.SpriteFrame();
-        spriteFrame.texture = texture;
-        res(spriteFrame);
+
+        // check exist spriteFrame
+        let name = url;
+        let isExist = assetManager.assets.get(name) as SpriteFrame;
+        if(isExist) {
+            return res(isExist)
+        }
+
+        const spriteFramec = new SpriteFrame();
+        spriteFramec.texture = texture;
+        assetManager.assets.add(name, spriteFramec);
+        res(spriteFramec);
     })
 }
 

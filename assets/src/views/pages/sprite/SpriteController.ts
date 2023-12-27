@@ -2,6 +2,7 @@ import { _decorator, Component, Node, Label } from 'cc';
 import {getImages} from "db://assets/src/engine/cache";
 import {SpriteImagesController} from "db://assets/src/views/pages/sprite/SpriteImagesController";
 import {ChatController} from "db://assets/src/views/pages/sprite/ChatController";
+import {sprite} from "db://assets/src/sprite";
 const { ccclass, property } = _decorator;
 
 @ccclass('SpriteController')
@@ -30,6 +31,7 @@ export class SpriteController extends Component {
     @property(Node)
     public chat: Node = null;
     start() {
+        this.node.active = true;
         this.updateMy();
     }
 
@@ -53,6 +55,10 @@ export class SpriteController extends Component {
         this.fullName.node.setPosition(0, size);
     }
 
+    updateChat = (message:string) => {
+        this.chat.getComponent(ChatController).createChat(message);
+    }
+
     updateMy = () => {
         this.my.type = 'player';
         this.my.skin = {
@@ -70,14 +76,18 @@ export class SpriteController extends Component {
         }
         this.my.name = 'Luffy';
         this.updateName(this.my.name);
-        setTimeout(() => {
-            this.updateSpriteFrame();
-            setTimeout(() => {
-                this.chat.getComponent(ChatController).createChat('đĩ mẹ vãi lồn thật');
-            },300);
-        },1000);
+        this.updateSpriteFrame();
+    }
 
-
+    updateSkinCreateNew = (skin: object, action: string, name: string) => {
+        this.my.skin = skin;
+        this.my.action = {
+            action : action,
+            move : 'left'
+        }
+        this.my.name = name;
+        this.updateName(this.my.name);
+        this.updateSpriteFrame();
     }
 
     updateSpriteFrame = () => {
@@ -96,6 +106,12 @@ export class SpriteController extends Component {
            let action = this.my.action.action;
            this[e].getComponent(SpriteImagesController).updateSprite(action, images, y, this.my.skin);
         });
+    }
+
+    updateAction = (action: string) => {
+        if(this.my.action.action === action) return;
+        this.my.action.action = action;
+        this.updateSpriteFrame();
     }
 
     private timeAwait: number = 0;

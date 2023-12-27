@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, NodeEventType, Label,
-    ScrollView, Vec2, tween } from 'cc';
+    ScrollView, Vec2, tween, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 import * as system from "db://assets/src/engine/sys";
@@ -65,14 +65,19 @@ export class noticeController extends Component {
         }
     }
 
+    private oldPosition: Vec3 = null;
     private effectButton(): void {
+        if(this.button.active === false) return;
         let oldPosition = this.button.getPosition().clone();
         let to = oldPosition.clone();
         to.x += cache.game.width/2;
         this.button.setPosition(to);
+        if(this.oldPosition === null) {
+            this.oldPosition = oldPosition;
+        }
 
         system.move(this.button, {
-            position : oldPosition,
+            position : this.oldPosition,
         }, 0.5, 'bounceOut')
     }
 

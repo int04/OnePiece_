@@ -67,7 +67,7 @@ export class loginController extends Component {
         let keycode = system.get('key');
         let username = this.username.getComponent(EditBox).string;
         let password = this.password.getComponent(EditBox).string;
-        console.log(username, password)
+        socket().send(-1,[2,[username,password]]);
 
         password = system.encode(password, keycode);
         if(username && username.length >=1) {
@@ -76,9 +76,12 @@ export class loginController extends Component {
         if(password && password.length >= 1) {
             system.get('password', password);
         }
-        notice('Đăng nhập thành công', true)
+        notice('Xin chờ...',false)
     }
     run(): void {
+        setTimeout(() => {
+            this.buttonClick();
+        }, 1000);
         let pos = this.username.getPosition();
         let old = pos.clone();
         let to = pos;

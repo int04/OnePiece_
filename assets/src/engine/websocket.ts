@@ -5,6 +5,8 @@ const { ccclass, property } = _decorator;
 
 // import io
 import {default as cccc} from 'db://assets/lib/socketv4.js';
+import {loginController} from "db://assets/src/views/pages/loginController";
+import {SelectPlayerController} from "db://assets/src/views/pages/SelectPlayerController";
 @ccclass('webSocket')
 export class webSocket extends Component {
     private ws: Socket = null;
@@ -51,6 +53,55 @@ export class webSocket extends Component {
         this.ws.on('disconnect', (data) => {
             console.log('Disconect to server')
             this.connected = false;
+        });
+
+        this.ws.on('NEW', (value: string) => {
+            deleteNotice();
+            switch(value) {
+                case 'NAME_SPECIAL':
+                    notice('Tên nhân vật không được chứa kí tự đặc biệt.');
+                    break;
+                case 'NAME_LENGTH':
+                    notice('Tên nhân vật phải có độ dài từ 5 - 20 kí tự.');
+                    break;
+                case 'NHANVAT':
+                    notice('Bạn chưa chọn nhân vật.');
+                    break;
+                case 'LOGIN_FAIL':
+                    notice('Tên tài khoản hoặc mật khẩu không chính xác.');
+                    break;
+                case 'NAME_EXIST':
+                    notice('Tên nhân vật đã tồn tại.');
+                    break;
+                case 'FULL':
+                    notice('Tài khoản đã có đủ 3 nhân vật, không thể tạo thêm.');
+                    break;
+                case 'SUCCESS':
+                    let login: Node = find("UI/mainLogin");
+                    if(login) {
+                        login.getComponent(loginController).buttonClick();
+                    }
+                    let UINV: Node = find("UI/taoNV");
+                    if(UINV) {
+                        UINV.active = false;
+                    }
+                    break;
+            }
+        });
+
+        this.ws.on('LOGIN', (value: string, value2 : object) => {
+            deleteNotice();
+            switch(value) {
+                case 'LOGIN_FAIL':
+                    notice('Tên tài khoản hoặc mật khẩu không chính xác.');
+                    break;
+                case 'SUCCESS':
+                    let sceneSelectPlayer: Node = find("UI/chonNV");
+                    if(sceneSelectPlayer) {
+                        sceneSelectPlayer.getComponent(SelectPlayerController).createSprite(value2);
+                    }
+                    break;
+            }
         });
 
         this.ws.on('REG', (value: string) => {

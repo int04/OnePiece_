@@ -66,6 +66,7 @@ export class loadController extends Component {
         })
         this.node.active = false;
 
+        cache.start = true;
         if(system.get('key') === null) {
             let time: number = system.time();
             let version: string = cache.info.version;

@@ -39,9 +39,18 @@ export class SpriteController extends Component {
         return size;
     }
 
-    updateName = (name: string) => {
+    updateName = async (name: string) => {
+        let wait = await this.getSizeObject('dau');
+        if(wait.y == 0) {
+            setTimeout(() => {
+                this.updateName(name);
+            },100);
+            return;
+        }
+        let size = wait.height/2 + wait.y + 30;
         this.fullName.string = name;
         this.fullName.updateRenderData();
+        this.fullName.node.setPosition(0, size);
     }
 
     updateMy = () => {

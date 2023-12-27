@@ -1,6 +1,6 @@
 import { _decorator, Component, Node, find } from 'cc';
 import cache from "db://assets/src/engine/cache";
-import {notice} from "db://assets/src/engine/UI";
+import {deleteNotice, notice} from "db://assets/src/engine/UI";
 const { ccclass, property } = _decorator;
 
 // import io
@@ -30,6 +30,7 @@ export class webSocket extends Component {
 
     methodWebsocket(): void {
         this.send = function(name: any, data: any) {
+            if(this.connected === false) return notice('Chưa thể kết nối đến máy chủ, vui lòng thử lại sau ít phút.');
             if(data) {
                 this.ws.emit(name, data);
             } else this.ws.emit(name);
@@ -50,6 +51,33 @@ export class webSocket extends Component {
         this.ws.on('disconnect', (data) => {
             console.log('Disconect to server')
             this.connected = false;
+        });
+
+        this.ws.on('REG', (value: string) => {
+            deleteNotice();
+            switch(value) {
+                case 'USERNAME_INVALID':
+                    notice('Tên tài khoản không được chứa kí tự đặc biệt.');
+                    break;
+                case 'PASSWORD_INVALID':
+                    notice('Mật khẩu không được chứa kí tự đặc biệt.');
+                    break;
+                case 'USERNAME_LENGTH_INVALID':
+                    notice('Tài khoản phải có độ dài từ 4 - 20 kí tự');
+                    break;
+                case 'PASSWORD_LENGTH_INVALID':
+                    notice('Mật khẩu phải có độ dài từ 4 - 20 kí tự');
+                    break;
+                case 'USERNAME_ALREADY_EXISTS':
+                    notice('Tài khoản đã tồn tại, vui lòng sử dụng tài khoản khác.');
+                    break;
+                case 'ERROR':
+                    notice('Có lỗi xảy ra, vui lòng liên hệ admin.');
+                    break;
+                case 'SUCCESS':
+                    notice('Đăng ký thành công. Chúc bạn chơi game vui vẻ.');
+                    break;
+            }
         });
 
     }

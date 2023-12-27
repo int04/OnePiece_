@@ -46,7 +46,7 @@ export class loadController extends Component {
         this.updateFile('Update Package JSON')
         this.updateBar(0)
 
-        let src: any = cache.sources;
+        let src: any = cache.resource;
         let downloaded: number = 0;
         let promise:any = [];
         src.forEach((item: String) => {

@@ -67,6 +67,10 @@ export class loginController extends Component {
         let keycode = system.get('key');
         let username = this.username.getComponent(EditBox).string;
         let password = this.password.getComponent(EditBox).string;
+
+        if(username.length < 1) return notice('Vui lòng nhập tên tài khoản.');
+        if(password.length < 1) return notice('Vui lòng nhập mật khẩu.');
+
         socket().send(-1,[2,[username,password]]);
 
         password = system.encode(password, keycode);
@@ -81,7 +85,7 @@ export class loginController extends Component {
     run(): void {
         setTimeout(() => {
             this.buttonClick();
-        }, 1000);
+        }, 300);
         let pos = this.username.getPosition();
         let old = pos.clone();
         let to = pos;

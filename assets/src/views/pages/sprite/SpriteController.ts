@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Label } from 'cc';
+import { _decorator, Component, Node, Label, NodeEventType } from 'cc';
 import {getImages} from "db://assets/src/engine/cache";
 import {SpriteImagesController} from "db://assets/src/views/pages/sprite/SpriteImagesController";
 import {ChatController} from "db://assets/src/views/pages/sprite/ChatController";
@@ -30,14 +30,45 @@ export class SpriteController extends Component {
 
     @property(Node)
     public chat: Node = null;
+
+
     start() {
+
+        this.my.action = {
+            action : 'dungyen',
+            move : 'left'
+        }
         this.node.active = true;
-        this.updateMy();
+        //this.updateMy();
     }
 
     getSizeObject = async (nameObject: string) => {
         let object = this[nameObject];
         let size = await object.getComponent(SpriteImagesController).getSize();
+        if(size.width === 0 || size.height === 0) {
+           return  new Promise(async (res, fai) => {
+                setTimeout(async () => {
+                     res(await this.getSizeObject(nameObject));
+                },100);
+           })
+        }
+        return size;
+    }
+
+    caculatorSize = async () => {
+        let objectNeed = ["ao", "quan", "dau"];
+        let size = {
+            width : 0,
+            height : 0,
+            y : 0
+        }
+        for(let i = 0; i < objectNeed.length; i++) {
+            let name = objectNeed[i];
+            let sizeObject = await this.getSizeObject(name);
+            if(sizeObject.width > size.width) size.width = sizeObject.width;
+            if(sizeObject.y < size.y) size.y = sizeObject.y;
+            size.height += sizeObject.height;
+        }
         return size;
     }
 
@@ -61,19 +92,7 @@ export class SpriteController extends Component {
 
     updateMy = () => {
         this.my.type = 'player';
-        this.my.skin = {
-            "ao": "iYIlvVCAhc",
-            "quan": "gprctPUJcF",
-            "lung": "gr0VkEI8d5",
-            "tay": "arh9l3zW7i",
-            "dau": "okeR9y6ukZ",
-            "toc": "9bDlyCxlMZ",
-            "mu": "T3YBh6UyL3"
-        }
-        this.my.action = {
-            action : 'dungyen',
-            move : 'left'
-        }
+
         this.my.name = 'Luffy';
         this.updateName(this.my.name);
         this.updateSpriteFrame();
@@ -85,6 +104,7 @@ export class SpriteController extends Component {
             action : action,
             move : 'left'
         }
+        this.my.type = 'player';
         this.my.name = name;
         this.updateName(this.my.name);
         this.updateSpriteFrame();
@@ -105,6 +125,18 @@ export class SpriteController extends Component {
            let images = this.my.skin[e];
            let action = this.my.action.action;
            this[e].getComponent(SpriteImagesController).updateSprite(action, images, y, this.my.skin);
+        });
+    }
+
+
+
+
+    updateClick = (event: Function) => {
+        let objectNeed = ["ao", "quan", "lung", "tay", "dau", "toc", "mu"];
+        objectNeed.forEach((e) => {
+            this[e].on(NodeEventType.TOUCH_START, () => {
+                event(e);
+            }, this)
         });
     }
 
@@ -135,6 +167,45 @@ export class SpriteController extends Component {
 
     update(deltaTime: number) {
         this.updatePlayer(deltaTime);
+
+    }
+
+    upDataMove(direct : string = 'left'):void {
+        let getScale = this.node.getScale();
+        let change:boolean = false;
+        this.my.action.move = direct;
+        if(this.my?.action?.move === 'left') {
+            if(getScale.x === -1) {
+                getScale.x = 1;
+                change = true;
+            }
+        }
+        if(this.my?.action?.move === 'right') {
+            if(getScale.x === 1) {
+                getScale.x = -1;
+                change = true;
+            }
+        }
+        if(change) {
+            let clone = getScale.clone();
+            clone.x  = 1
+            if(this.fullName.node.getScale().x === 1) {
+                clone.x = -1;
+            }
+            this.fullName.node.setScale(clone);
+            this.node.setScale(getScale);
+        }
+    }
+
+    createSprite(my : any) :void {
+        this.my = my;
+        this.my.action = this.my.action || {};
+        this.my.action.action = this.my.action.action || 'dungyen';
+        this.my.action.move = this.my.action.move || 'left';
+        if(this.my.type === 'player') {
+            this.updateName(this.my.name);
+            this.updateSpriteFrame();
+        }
     }
 }
 

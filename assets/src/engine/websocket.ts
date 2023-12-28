@@ -7,6 +7,7 @@ const { ccclass, property } = _decorator;
 import {default as cccc} from 'db://assets/lib/socketv4.js';
 import {loginController} from "db://assets/src/views/pages/loginController";
 import {SelectPlayerController} from "db://assets/src/views/pages/SelectPlayerController";
+import {createSprite, goto, resetAll} from "db://assets/src/views/pages/sprite/MapController";
 @ccclass('webSocket')
 export class webSocket extends Component {
     private ws: Socket = null;
@@ -79,6 +80,7 @@ export class webSocket extends Component {
                 case 'SUCCESS':
                     let login: Node = find("UI/mainLogin");
                     if(login) {
+                        login.active = true;
                         login.getComponent(loginController).buttonClick();
                     }
                     let UINV: Node = find("UI/taoNV");
@@ -129,6 +131,22 @@ export class webSocket extends Component {
                     notice('Đăng ký thành công. Chúc bạn chơi game vui vẻ.');
                     break;
             }
+        });
+
+        this.ws.on('PLAY', (value: any) => {
+            deleteNotice();
+            value.type = 'player';
+            let game:Node = find("game");
+            game.active = true;
+            let sceneSelectPlayer: Node = find("UI/chonNV");
+            if(sceneSelectPlayer) {
+                sceneSelectPlayer.active = false;
+            }
+            cache.my = value;
+            console.log(value);
+            resetAll();
+            createSprite(value);
+            goto(value.pos.map, null, value.pos.x, value.pos.y);
         });
 
     }

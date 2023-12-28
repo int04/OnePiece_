@@ -1,6 +1,9 @@
 import { view  } from 'cc';
 
 let cache :any = {
+    my : {
+        id : null,
+    },
     start : false,
     path : 'http://192.168.1.139:5555/res/int04/',
     home : 'http://192.168.1.139:5555/res/',

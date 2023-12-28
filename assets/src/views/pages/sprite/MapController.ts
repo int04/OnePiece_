@@ -1,0 +1,68 @@
+import cache from "db://assets/src/engine/cache";
+import { _decorator, Component, Node, find, instantiate } from 'cc';
+import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
+const { ccclass, property } = _decorator;
+
+export function resetAll() {
+    let node = find("game/player");
+    if(node) {
+        node.destroyAllChildren();
+    }
+}
+
+export function reset() {
+    // reset all, but not reset cache.my.id
+    let node = find("game/player");
+    let getChild = node.children;
+    getChild.forEach(e => {
+        if(e.name !== cache.my.id) {
+            e.destroy();
+        }
+    });
+}
+
+export let getSprite = (id: any) => {
+    if(typeof id === 'number') {
+        id = id.toString();
+    }
+    let node = find("game/player/"+id);
+    if(node) {
+        return node;
+    }
+    return null;
+}
+
+export function createSprite(my : any) {
+    if(typeof my.id === 'number') {
+        my.id = my.id.toString();
+    }
+    let uid = find("game/player/"+my.id);
+    if(uid) {
+        let sprite = uid.getComponent(SpriteController);
+        sprite.createSprite(my);
+    }
+    else {
+        let demo = find("game/demo/0");
+        let clone = instantiate(demo);
+        clone.parent = find("game/player");
+        clone.name = my.id;
+        clone.active = true;
+        clone.setPosition(my.pos.x, my.pos.y);
+        clone.getComponent(SpriteController).createSprite(my);
+    }
+}
+
+export function goto(id: any, zone : any = null, x: any = null, y: any = null) {
+    cache.my.pos.map = id;
+
+    return;
+    if(x !== null && y !== null) {
+        if(self.my.id >=1) {
+            let sprite = self.getSprite(self.my.id);
+            sprite.x = x;
+            sprite.y = y;
+            self.my.pos.x = x;
+            self.my.pos.y = y;
+        }
+    }
+}

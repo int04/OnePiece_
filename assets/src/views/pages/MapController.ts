@@ -1,5 +1,5 @@
 import cache from "db://assets/src/engine/cache";
-import { _decorator, Component, Node, find, instantiate, TiledMap, assetManager, TiledMapAsset, TiledTile, TiledLayer, resources, SpriteFrame , Texture2D , Sprite, UITransform, BoxCollider2D, RigidBody2D, ERigidBody2DType   } from 'cc';
+import { _decorator, Component, Node, find, instantiate, TiledMap, assetManager, TiledMapAsset, TiledTile, TiledLayer, resources, SpriteFrame , Texture2D , Sprite, UITransform, BoxCollider2D, RigidBody2D, ERigidBody2DType , RenderTexture  } from 'cc';
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 import {getTile} from "db://assets/src/views/pages/map/getTile";
 import {exportTitled} from "db://assets/src/views/pages/map/exportTiled";
@@ -124,6 +124,8 @@ let texture = (link: string ) => {
 
 }
 
+
+
 export async function loadMap(name:string): Promise<any> {
     let map = await getMapTitled(name);
 
@@ -147,7 +149,7 @@ export async function loadMap(name:string): Promise<any> {
         }
 
 
-        let scale = 0.8;
+        let scale = 0.9;
 
 
 
@@ -204,5 +206,6 @@ export async function loadMap(name:string): Promise<any> {
 
 
     });
+
 
 }

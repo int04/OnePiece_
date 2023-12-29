@@ -7,6 +7,7 @@ const { ccclass, property } = _decorator;
 export class SpriteImagesController extends Component {
     public IdImages = "";
     public y = 0;
+    public x = 0;
     public action = "";
     public num: number = 0;
     public scale: number = 0.65;
@@ -35,10 +36,19 @@ export class SpriteImagesController extends Component {
             {
                 let check = getImagesIndex(this.skinIndex['quan'], action);
                 let y = 0;
+                let x = 0;
                 if(check) {
                     let ycheck = check[1][1];
-                    if(ycheck < 0) y+= Math.abs(ycheck);
-                    else y-= Math.abs(ycheck);
+                    if(ycheck !=0) {
+                        if(ycheck < 0) y+= Math.abs(ycheck);
+                        else y= -Math.abs(ycheck);
+                    }
+
+                    let xcheck = check[1][0];
+                    if(xcheck !=0) {
+                        if(xcheck < 0) x+= Math.abs(xcheck);
+                        else x= -Math.abs(xcheck);
+                    }
                 }
                 this.y = y;
             }
@@ -76,7 +86,7 @@ export class SpriteImagesController extends Component {
                 if(!box) {
                     box = this.node.addComponent(BoxCollider2D);
                 }
-                box.size.width = size_w + size_w
+                box.size.width = size_w *1
                 box.size.height = size_h;
                 let body = this.node.getComponent(RigidBody2D);
                 if(!body) {
@@ -89,9 +99,10 @@ export class SpriteImagesController extends Component {
 
         this.num++;
     }
-    updateSprite(action:string, idImages: string, y : number, skin: object) {
+    updateSprite(action:string, idImages: string, y : number, skin: object, x : number  = 0) {
         this.IdImages = idImages;
         this.y = y;
+        this.x = x;
         this.action = action;
         this.num = 0;
         this.skin = skin;

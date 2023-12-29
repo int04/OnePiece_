@@ -80,6 +80,7 @@ export class gameController extends Component {
     private roitudo :boolean = true;
     private jumUp : boolean = false;
     private vOld : number = 0;
+    private timeRoi : number = 0;
     public spriteRoitudo(deltaTime : number): void {
         if(this.roitudo === true && this.jumUp === false) {
             if(this.docao === null) this.docao = this.nhanvat.getPosition().y;
@@ -91,6 +92,7 @@ export class gameController extends Component {
             if(vacham) {
                 this.roitudo = false;
                 this.vOld = 0;
+                this.timeRoi = 0;
                 this.setOnDat(null, vacham);
 
                 this.valueUp = this.valueUpDefault;
@@ -101,11 +103,11 @@ export class gameController extends Component {
 
             }
             else {
-                let g = 9.8 * 1
-                let v = this.vOld + g
-                this.vOld = v
+                this.timeRoi += deltaTime;
+                if(this.vOld <=0) this.vOld = 1;
+                let v = 9.8 * this.timeRoi + (96*0.8)/2 * this.timeRoi;
                 let pos = this.nhanvat.getPosition();
-                pos.y -= v * deltaTime  + 240 * deltaTime;
+                pos.y -= v
                 this.nhanvat.setPosition(pos);
                 this.nhanvat.getComponent(SpriteController).updateAction('roi');
             }
@@ -117,10 +119,11 @@ export class gameController extends Component {
             let chamdat = this.onDat();
             if(!chamdat) {
                 this.roitudo = true;
-                this.vOld = 0;
             }
             else {
                 this.valueUp = this.valueUpDefault;
+                this.vOld = 0;
+                this.timeRoi = 0;
             }
         }
     }
@@ -133,6 +136,7 @@ export class gameController extends Component {
             // using tween Quadratic.out
             let clone = this.nhanvat.getPosition().clone();
             this.vOld = 0;
+            this.timeRoi = 0;
             this.roitudo = false;
 
             let done = () => {
@@ -151,12 +155,15 @@ export class gameController extends Component {
             }
             if(this.valueUp != this.valueUpDefault) speed = 0.5;
             clone.y += this.valueUp;
-
-            tween(this.nhanvat).
+            let old = this.nhanvat.getPosition().clone();
+            tween(old).
             to(speed,
-                {position: {y : clone.y} },
+                {y: clone.y },
                 { easing: 'quartOut',onUpdate : () => {
-
+                        let pos = this.nhanvat.getPosition();
+                        pos.y = old.y;
+                        this.nhanvat.setPosition(pos);
+                        this.nhanvat.getComponent(SpriteController).updateAction('nhay');
                     },onComplete : () => {done()}}
             ).start()
 
@@ -178,14 +185,13 @@ export class gameController extends Component {
             //get all children name = dat
             let getChild = map.children;
             let get = sprite.getComponent(SpriteController)
-            let size = await get.getSizeObject('quan');
             let block = get.quan.getComponent(BoxCollider2D);
             for(let i = 0; i < getChild.length; i++) {
                 let e = getChild[i];
 
                 let sosanh;
                 if(this.key[39]) sosanh = e.name === 'camdi' && e.getPosition().x > sprite.getPosition().x;
-                if(this.key[37]) sosanh = e.name === 'camdi' && e.getPosition().x+ size.width/2 < sprite.getPosition().x;
+                if(this.key[37]) sosanh = e.name === 'camdi' && e.getPosition().x < sprite.getPosition().x;
 
                 if(sosanh) {
                     let collider = e.getComponent(BoxCollider2D);
@@ -266,7 +272,7 @@ export class gameController extends Component {
 
              */
             let current_position = this.camera.getPosition()
-            current_position.lerp(target_postion, 0.1, current_position)
+            current_position.lerp(target_postion, 0.04, current_position)
             this.camera.setPosition(current_position)
         }
     }

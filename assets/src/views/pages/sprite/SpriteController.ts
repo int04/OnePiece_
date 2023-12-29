@@ -117,16 +117,25 @@ export class SpriteController extends Component {
 
         let check = getImages(this.my.skin['quan'],this.my.action.action);
         let y = 0;
+        let x = 0;
         if(check) {
             let ycheck = check[1][1];
-            if(ycheck < 0) y+= Math.abs(ycheck);
-            else y-= Math.abs(ycheck);
+            if(ycheck !=0) {
+                if(ycheck < 0) y+= Math.abs(ycheck);
+                else y= -Math.abs(ycheck);
+            }
+
+            let xcheck = check[1][0];
+            if(xcheck !=0) {
+                if(xcheck < 0) x+= Math.abs(xcheck);
+                else x= -Math.abs(xcheck);
+            }
         }
 
         objectNeed.forEach((e) => {
            let images = this.my.skin[e];
            let action = this.my.action.action;
-           this[e].getComponent(SpriteImagesController).updateSprite(action, images, y, this.my.skin);
+           this[e].getComponent(SpriteImagesController).updateSprite(action, images, y, this.my.skin, x);
         });
     }
 

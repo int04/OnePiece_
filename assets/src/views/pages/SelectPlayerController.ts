@@ -85,7 +85,7 @@ export class SelectPlayerController extends Component {
             }
 
             if(data[i]) {
-                if(i ===0) {
+                if(i ===1) {
                     setTimeout(() => {
                         this.InterGame(data[i].id);
                     },200);

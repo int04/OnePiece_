@@ -9,7 +9,7 @@ const { ccclass, property } = _decorator;
 export class gameController extends Component {
     @property(Node)
     public camera: Node = null;
-    private key: object = {};
+    public key: object = {};
     public nhanvat: Node = null;
     start() {
         this.node.active = true;
@@ -24,7 +24,11 @@ export class gameController extends Component {
         this.key[event.keyCode] = false;
         delete this.key[event.keyCode];
 
-        if(cache.my.id && (event.keyCode === 37 || event.keyCode === 39 )) {
+        this.resetEvent(event.keyCode)
+    }
+
+    public resetEvent(key: number): void {
+        if(cache.my.id && (key === 37 || key === 39 )) {
             let nhanVat = getSprite(cache.my.id);
             if(this.roitudo === false && this.jumUp === false) {
                 nhanVat.getComponent(SpriteController).updateAction('dungyen');

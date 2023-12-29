@@ -14,11 +14,13 @@ let get:any = (key: string, data : any = null): any => {
 
 let encode = (content : any, key: string): string => {
     let defaultz = CryptoTS;
+    return content;
     return defaultz.AES.encrypt(content, key).toString();
 }
 
 let decode = (content : any, key: string): string => {
     let defaultz = CryptoTS;
+    return content;
     return defaultz.AES.decrypt(content, key).toString(defaultz.enc.Utf8);
 }
 

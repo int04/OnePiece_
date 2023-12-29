@@ -31,6 +31,8 @@ export class SpriteController extends Component {
     @property(Node)
     public chat: Node = null;
 
+    public size: object = {};
+
 
     start() {
 

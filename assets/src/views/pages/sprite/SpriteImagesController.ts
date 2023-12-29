@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, UITransform, Sprite, SpriteFrame } from 'cc';
+import { _decorator, Component, Node, UITransform, Sprite, SpriteFrame, BoxCollider2D, RigidBody2D, ERigidBody2DType } from 'cc';
 import cache, {getImages, getImagesIndex} from "db://assets/src/engine/cache";
 import {coverSpriteFrame} from "db://assets/src/engine/draw";
 const { ccclass, property } = _decorator;
@@ -68,6 +68,23 @@ export class SpriteImagesController extends Component {
             // set new frame
             this.node.getComponent(Sprite).spriteFrame = spritedata;
             this.node.setPosition(x, y);
+            if(this.node.name === 'quan' && this.action === 'dungyen') {
+                let size_w = size.width * scale;
+                let size_h = size.height * scale;
+
+                let box = this.node.getComponent(BoxCollider2D);
+                if(!box) {
+                    box = this.node.addComponent(BoxCollider2D);
+                }
+                box.size.width = size_w + size_w
+                box.size.height = size_h;
+                let body = this.node.getComponent(RigidBody2D);
+                if(!body) {
+                    body = this.node.addComponent(RigidBody2D);
+                }
+                body.type = ERigidBody2DType.Static;
+
+            }
         });
 
         this.num++;

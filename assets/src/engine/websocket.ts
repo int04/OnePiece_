@@ -7,7 +7,7 @@ const { ccclass, property } = _decorator;
 import {default as cccc} from 'db://assets/lib/socketv4.js';
 import {loginController} from "db://assets/src/views/pages/loginController";
 import {SelectPlayerController} from "db://assets/src/views/pages/SelectPlayerController";
-import {createSprite, goto, resetAll} from "db://assets/src/views/pages/sprite/MapController";
+import {createSprite, goto, resetAll} from "../views/pages/MapController";
 @ccclass('webSocket')
 export class webSocket extends Component {
     private ws: Socket = null;

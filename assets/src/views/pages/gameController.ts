@@ -136,6 +136,7 @@ export class gameController extends Component {
     private  docao: number = 0;
     public nhayLen():void {
         if(this.key[38] && this.jumUp === false) {
+            this.nhanvat.getComponent(SpriteController).testDemo();
             this.jumUp = true;
             // using tween Quadratic.out
             let clone = this.nhanvat.getPosition().clone();

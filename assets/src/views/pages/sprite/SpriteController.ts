@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Label, NodeEventType } from 'cc';
+import { _decorator, Component, Node, Label, NodeEventType, find } from 'cc';
 import {getImages} from "db://assets/src/engine/cache";
 import {SpriteImagesController} from "db://assets/src/views/pages/sprite/SpriteImagesController";
 import {ChatController} from "db://assets/src/views/pages/sprite/ChatController";
@@ -44,6 +44,19 @@ export class SpriteController extends Component {
         //this.updateMy();
     }
 
+    testDemo():void {
+        let game = find("game");
+        let gamePos = game.getPosition();
+        let quan = this.quan.getComponent(SpriteImagesController);
+        // get postiton of quan in game
+        let quanPos = quan.node.getPosition();
+        // get position of quan in camera
+        let camera = find("game/Camera");
+        let cameraPos = camera.getPosition();
+        let quanPosCamera = quanPos.add(cameraPos);
+        console.log(quanPosCamera)
+
+    }
     getSizeObject = async (nameObject: string) => {
         let object = this[nameObject];
         let size = await object.getComponent(SpriteImagesController).getSize();

@@ -44,15 +44,8 @@ export class MoveButtonUI extends Component {
         if(animation) {
             // reset animation
             let state = animation.getState(animation.defaultClip.name)
-            console.log(state)
             state.time = 0;
-            // set frame for sprite
-            let sprite = button.getComponent(Sprite);
-
-            // reset sprite
-            if(sprite) {
-              //  sprite.spriteFrame = null;
-            }
+            state.sample();
 
         }
 

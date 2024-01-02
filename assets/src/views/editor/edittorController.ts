@@ -281,11 +281,15 @@ export class edittorController extends Component {
             let coppy = JSON.parse(JSON.stringify(data_img));
             if(newid) coppy.id = idRandom;
             if(newname) coppy.name = randomString(10);
+            coppy.type = name;
+
             data.push(coppy);
+
 
             let coppy2 = JSON.parse(JSON.stringify(data_img));
             coppy2.id = idRandom2;
             coppy2.name = randomString(10);
+            coppy2.type = name;
             data_ChangeID.push(coppy2);
         }
         input.getComponent(EditBox).string = JSON.stringify(data);
@@ -309,10 +313,12 @@ export class edittorController extends Component {
             let coppy = JSON.parse(JSON.stringify(data_img));
             if(newid) coppy.id = idRandom;
             if(newname) coppy.name = randomString(10);
+            coppy.type = name;
             data = coppy
 
             let coppy2 = JSON.parse(JSON.stringify(data_img));
             coppy2.id = idRandom2;
+            coppy2.type = name;
             coppy2.name = randomString(10);
             data2 = coppy2
         }

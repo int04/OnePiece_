@@ -1034,12 +1034,12 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "4c68327b-998c-457e-9bac-91e4bdf8044a@f9941",
+      "__uuid__": "3976bb5e-71d1-4ffd-8238-9b1a2ef4ca0a@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
     "_fillType": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -1518,7 +1518,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 76.7353422174043,
+      "width": 76.73828125,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -1551,7 +1551,7 @@
     "_string": "dungyen",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -2490,7 +2490,7 @@
     "_string": "Hành động",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -2859,7 +2859,7 @@
     "_string": "Đối tượng",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -3228,7 +3228,7 @@
     "_string": "Đối tượng",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -3597,7 +3597,7 @@
     "_string": "Đối tượng",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -3966,7 +3966,7 @@
     "_string": "Đối tượng",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -4335,7 +4335,7 @@
     "_string": "Hành động",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -4592,7 +4592,7 @@
     "_string": "Cập nhật",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -4996,7 +4996,7 @@
     "_string": "Đối tượng",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -5072,7 +5072,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 89.86957984449761,
+      "width": 89.873046875,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -5105,7 +5105,7 @@
     "_string": "Đối tượng",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -5477,7 +5477,7 @@
     "_string": "Đối tượng",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -5553,7 +5553,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 55.574027175538276,
+      "width": 55.576171875,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -5586,7 +5586,7 @@
     "_string": "Tất cả",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -6067,7 +6067,7 @@
     "_string": "Đối tượng",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -6143,7 +6143,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 55.574027175538276,
+      "width": 55.576171875,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -6176,7 +6176,7 @@
     "_string": "Tất cả",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -6548,7 +6548,7 @@
     "_string": "Đối tượng",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -6624,7 +6624,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 55.574027175538276,
+      "width": 55.576171875,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -6657,7 +6657,7 @@
     "_string": "Tất cả",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -7038,7 +7038,7 @@
     "_string": "Chọn áo",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -7327,7 +7327,7 @@
     "_string": "Quần",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -7616,7 +7616,7 @@
     "_string": "Tóc",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -7905,7 +7905,7 @@
     "_string": "Nón",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -8194,7 +8194,7 @@
     "_string": "Tay",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -8483,7 +8483,7 @@
     "_string": "Lưng",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -8772,7 +8772,7 @@
     "_string": "đầu",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -9185,7 +9185,7 @@
     "_string": "Ân áo",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -9474,7 +9474,7 @@
     "_string": "Quần",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -9763,7 +9763,7 @@
     "_string": "Tóc",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -10052,7 +10052,7 @@
     "_string": "Nón",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -10341,7 +10341,7 @@
     "_string": "Tay",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -10630,7 +10630,7 @@
     "_string": "Lưng",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -10919,7 +10919,7 @@
     "_string": "đầu",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -11244,7 +11244,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 50.04691238038277,
+      "width": 50.048828125,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -11277,7 +11277,7 @@
     "_string": "ẩn áo",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -11353,7 +11353,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 72.29215572667464,
+      "width": 72.294921875,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -11386,7 +11386,7 @@
     "_string": "ẩn quàn",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -11462,7 +11462,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 54.48032857356459,
+      "width": 54.482421875,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -11495,7 +11495,7 @@
     "_string": "ẩn tóc",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -11571,7 +11571,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 55.58379747308612,
+      "width": 55.5859375,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -11604,7 +11604,7 @@
     "_string": "ẩn mũ",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -11680,7 +11680,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 54.48032857356459,
+      "width": 54.482421875,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -11713,7 +11713,7 @@
     "_string": "ẩn tay",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -11789,7 +11789,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 67.87825209330143,
+      "width": 67.880859375,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -11822,7 +11822,7 @@
     "_string": "ẩn lưng",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -11898,7 +11898,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 61.16953405352871,
+      "width": 61.171875,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -11931,7 +11931,7 @@
     "_string": "ẩn đầu",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -12149,7 +12149,7 @@
     "_string": "Chuyển HĐ",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -13098,12 +13098,12 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "4c68327b-998c-457e-9bac-91e4bdf8044a@f9941",
+      "__uuid__": "2b80d644-d086-40be-8202-72c74acefb6b@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
     "_fillType": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -13189,7 +13189,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 42.254238000897125,
+      "width": 42.255859375,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -13222,7 +13222,7 @@
     "_string": "label",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -13577,7 +13577,7 @@
     "_string": "Chọn (tắt)",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -13866,7 +13866,7 @@
     "_string": "tải ảnh",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -18438,7 +18438,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 157.92361318779902,
+      "width": 157.9296875,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -18471,7 +18471,7 @@
     "_string": "Chưa chọn action",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -18508,8 +18508,8 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 45.553,
-      "y": -77.13999999999999,
+      "x": 76.906,
+      "y": -77.14,
       "z": 0
     },
     "_lrot": {
@@ -18547,7 +18547,7 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 191.10592665968898,
+      "width": 191.11328125,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -18580,7 +18580,7 @@
     "_string": "Chưa chọn đối tượng",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -18859,7 +18859,7 @@
     "_string": "Nhâp tên mới",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -19023,7 +19023,7 @@
     "_string": "sao chép",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -19481,7 +19481,7 @@
     "_string": "Tên ảnh mới",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 34.735,
@@ -19645,7 +19645,7 @@
     "_string": "Thay hết",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -20046,7 +20046,7 @@
     "_string": "Tên ảnh cũ",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -20341,7 +20341,7 @@
     "_string": "Menu",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 21.770833333333336,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,

@@ -4,7 +4,7 @@ import {getSprite} from "./MapController";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 import {spriteController} from "db://assets/src/views/editor/spriteController";
 const { ccclass, property } = _decorator;
-
+// @ts-ignore
 @ccclass('gameController')
 export class gameController extends Component {
     @property(Node)
@@ -13,7 +13,9 @@ export class gameController extends Component {
     public nhanvat: Node = null;
     start() {
         this.node.active = true;
+        // @ts-ignore
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.KEY_DOWN, this);
+        // @ts-ignore
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.KEY_UP, this);
     }
 
@@ -53,7 +55,9 @@ export class gameController extends Component {
                     return {
                         x : e.getPosition().x,
                         y : e.getPosition().y,
+                        // @ts-ignore
                         width : e.getContentSize().width,
+                        // @ts-ignore
                         height : e.getContentSize().height
                     }
                 }
@@ -72,9 +76,9 @@ export class gameController extends Component {
         if(data) {
          //   this.nhanvat.setScale(1.5,1.5)
             sprite.getComponent(SpriteController).updateAction('dungyen');
-
             let quanSize = await sprite.getComponent(SpriteController).getSizeObject('quan');
             let pos = sprite.getPosition();
+            // @ts-ignore
             pos.y = data.y + data.height/2 + quanSize.height/2 - 28
             sprite.setPosition(pos);
         }
@@ -206,6 +210,13 @@ export class gameController extends Component {
                         speed = 0;
                         break;
                     }
+
+                    let spriteCollider = sprite.getComponent(BoxCollider2D);
+                    let t2 = Intersection2D.rectRect(collider.worldAABB, spriteCollider.worldAABB);
+                    if(t2) {
+                        speed = 0;
+                        break;
+                    }
                 }
             }
         }
@@ -277,6 +288,7 @@ export class gameController extends Component {
 
              */
             let current_position = this.camera.getPosition()
+            // @ts-ignore
             current_position.lerp(target_postion, 0.04, current_position)
             this.camera.setPosition(current_position)
         }

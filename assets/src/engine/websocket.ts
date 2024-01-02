@@ -46,6 +46,11 @@ export class webSocket extends Component {
     }
 
     onMessage():void {
+        this.ws.on('_', (data: any) => {
+            console.log(data);
+            cache.server.exp.level = data?.exp?.levelPlayer;
+            cache.server.exp.skill = data?.exp?.skillPlayer;
+        });
         this.ws.on('connect', (data: any) => {
             this.connected = true;
             console.log('connect server Success')
@@ -90,7 +95,7 @@ export class webSocket extends Component {
                     break;
             }
         });
-
+        // @ts-ignore
         this.ws.on('LOGIN', (value: string, value2 : object) => {
             deleteNotice();
             switch(value) {

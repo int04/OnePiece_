@@ -140,7 +140,6 @@ export class gameController extends Component {
     private  docao: number = 0;
     public nhayLen():void {
         if(this.key[38] && this.jumUp === false) {
-            this.nhanvat.getComponent(SpriteController).testDemo();
             this.jumUp = true;
             // using tween Quadratic.out
             let clone = this.nhanvat.getPosition().clone();
@@ -219,6 +218,15 @@ export class gameController extends Component {
                     }
                 }
             }
+            if(speed > 0) {
+                let xleft = speed * deltaTime;
+                if(this.key[37] && sprite.getPosition().x - xleft < cache.map.x.min) {
+                    speed = 0;
+                }
+                if(this.key[39] && sprite.getPosition().x + xleft > cache.map.x.max) {
+                    speed = 0;
+                }
+            }
         }
 
 
@@ -268,11 +276,11 @@ export class gameController extends Component {
 
             this.MOVE(deltaTime);
             let target_postion = this.nhanvat.getPosition()
-            let minX = 0;
-            let maxX = 1000;
-            let minY = 0;
-            let maxY = 1000;
-            /*
+            let minX = cache.map.x.min + cache.game.width/2;
+            let maxX = cache.map.x.max - cache.game.width/2;
+            let minY = cache.map.y.min + cache.game.height/2;
+            let maxY = cache.map.y.max - cache.game.height/2;
+
             if(target_postion.x < minX) {
                 target_postion.x = minX
             }
@@ -286,7 +294,7 @@ export class gameController extends Component {
                 target_postion.y = maxY
             }
 
-             */
+
             let current_position = this.camera.getPosition()
             // @ts-ignore
             current_position.lerp(target_postion, 0.04, current_position)

@@ -47,18 +47,7 @@ export class SpriteController extends Component {
         //this.updateMy();
     }
 
-    testDemo():void {
-        let game = find("game");
-        let gamePos = game.getPosition();
-        let quan = this.quan.getComponent(SpriteImagesController);
-        // get postiton of quan in game
-        let quanPos = quan.node.getPosition();
-        // get position of quan in camera
-        let camera = find("game/Camera");
-        let cameraPos = camera.getPosition();
-        let quanPosCamera = quanPos.add(cameraPos);
 
-    }
     getSizeObject = async (nameObject: string) => {
         let object = this[nameObject];
         let size = await object.getComponent(SpriteImagesController).getSize();

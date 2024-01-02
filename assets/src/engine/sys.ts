@@ -94,3 +94,11 @@ export function moveFinished(WHO: any, NEXT:any, time: number, easingSet: any = 
             .start()
     })
 }
+
+
+export function number_format(text : any): string {
+    if(typeof text === 'number') {
+        text = text.toString();
+    }
+    return text.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}

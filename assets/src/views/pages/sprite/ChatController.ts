@@ -80,6 +80,7 @@ export class ChatController extends Component {
 
 
 
+        // @ts-ignore
         let y = object.getPosition().y + object.getContentSize().height/2
 
         graphics.roundRect(-size2.width/2, y, width, height, 10);

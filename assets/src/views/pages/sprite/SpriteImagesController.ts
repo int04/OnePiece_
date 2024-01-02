@@ -132,6 +132,7 @@ export class SpriteImagesController extends Component {
             coverSpriteFrame(this.FrameName).then((spritedata : SpriteFrame) => {
                 // @ts-ignore
                 let scale = this.node.getScale();
+                // @ts-ignore
                 let sizeSprite = this.node.getContentSize();
                 let XY = this.node.getPosition();
                 let sizeSpriteNew = {

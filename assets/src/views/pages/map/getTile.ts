@@ -3,6 +3,7 @@ import { _decorator, Component, Node, find, instantiate, TiledMap, assetManager,
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 
 function getMapTitled(url:string): any {
+    // @ts-ignore
     if(typeof url != 'string') url = url.toString();
     url = cache.path+'maps/' + url+'.tsj';
     return new Promise((res,fai) => {
@@ -54,9 +55,12 @@ export async function getTile(data) {
                 };
 
                 if(tile.animation) {
+
+                    // @ts-ignore
                     obb.animation = [];
                     tile.animation.forEach(e => {
                         let info = tiles.tiles.find(e2 => e2.id === e.tileid);
+                        // @ts-ignore
                         obb.animation.push({
                             src : info.image,
                             duration : e.duration,

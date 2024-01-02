@@ -10,6 +10,7 @@ export class camera extends Component {
     private nhanVat: Node = null;
 
     update(deltaTime: number) {
+        // @ts-ignore
         if(this.NhanVat === null) {
             return
         }

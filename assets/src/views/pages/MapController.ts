@@ -60,11 +60,15 @@ export function goto(id: any, zone : any = null, x: any = null, y: any = null) {
     loadMap('map6')
     return;
     if(x !== null && y !== null) {
+        // @ts-ignore
         if(self.my.id >=1) {
+            // @ts-ignore
             let sprite = self.getSprite(self.my.id);
             sprite.x = x;
             sprite.y = y;
+            // @ts-ignore
             self.my.pos.x = x;
+            // @ts-ignore
             self.my.pos.y = y;
         }
     }

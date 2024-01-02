@@ -102,3 +102,11 @@ export function number_format(text : any): string {
     }
     return text.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
+
+export function delay(time: number): any {
+    return new Promise((res, fai) => {
+        setTimeout(() => {
+            res(true);
+        }, time);
+    })
+}

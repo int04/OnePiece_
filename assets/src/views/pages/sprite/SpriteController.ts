@@ -1,13 +1,16 @@
-import { _decorator, Component, Node, Label, NodeEventType, find } from 'cc';
-import {getImages} from "db://assets/src/engine/cache";
+import { _decorator, Component, Node, Label, NodeEventType, find, BoxCollider2D, RigidBody2D, ERigidBody2DType } from 'cc';
+import cache, {getImages} from "db://assets/src/engine/cache";
 import {SpriteImagesController} from "db://assets/src/views/pages/sprite/SpriteImagesController";
 import {ChatController} from "db://assets/src/views/pages/sprite/ChatController";
 import {sprite} from "db://assets/src/sprite";
+import {CaiBongController} from "db://assets/src/views/pages/sprite/CaiBongController";
 const { ccclass, property } = _decorator;
 
 @ccclass('SpriteController')
 export class SpriteController extends Component {
 
+    @property(CaiBongController)
+    public caiBong: CaiBongController = null;
     @property(Node)
     public body: Node = null;
     public my : any = {};
@@ -54,7 +57,6 @@ export class SpriteController extends Component {
         let camera = find("game/Camera");
         let cameraPos = camera.getPosition();
         let quanPosCamera = quanPos.add(cameraPos);
-        console.log(quanPosCamera)
 
     }
     getSizeObject = async (nameObject: string) => {
@@ -172,8 +174,12 @@ export class SpriteController extends Component {
 
     private timeAwait: number = 0;
     private updateSprite:boolean = false;
+    private playerAddCollision:boolean = false;
     updatePlayer(deltaTime: number): void {
         if(this.my.type != 'player') return;
+        if(this.playerAddCollision === false) {
+            this.createCollision2d();
+        }
         this.timeAwait += deltaTime;
         if(this.timeAwait < 0.3) return;
         this.timeAwait = 0;
@@ -191,7 +197,31 @@ export class SpriteController extends Component {
 
     update(deltaTime: number) {
         this.updatePlayer(deltaTime);
+        if(this.my.pos.y != this.node.getPosition().y) {
+            this.my.pos.y = this.node.getPosition().y;
+            this.caiBong.updateThat();
+        }
 
+    }
+
+    private async createCollision2d():Promise<void> {
+        this.playerAddCollision = true;
+        let size = await this.caculatorSize();
+        if(this.my.action.action != 'dungyen') {
+            this.playerAddCollision = false;
+            return;
+        }
+        let box = this.node.getComponent(BoxCollider2D);
+        if(!box) {
+            box = this.node.addComponent(BoxCollider2D);
+        }
+        box.size.width = size.width *1
+        box.size.height = size.height;
+        let body = this.node.getComponent(RigidBody2D);
+        if(!body) {
+            body = this.node.addComponent(RigidBody2D);
+        }
+        body.type = ERigidBody2DType.Static;
     }
 
     upDataMove(direct : string = 'left'):void {

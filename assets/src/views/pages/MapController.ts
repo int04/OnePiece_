@@ -3,7 +3,6 @@ import { _decorator, Component, Node, find, instantiate, TiledMap, assetManager,
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 import {getTile} from "db://assets/src/views/pages/map/getTile";
 import {exportTitled} from "db://assets/src/views/pages/map/exportTiled";
-import {loadAssetsImages} from "db://assets/src/views/pages/map/loadAsset";
 import {LoadingController} from "db://assets/src/views/pages/map/LoadingController";
 const { ccclass, property } = _decorator;
 

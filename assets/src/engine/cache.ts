@@ -24,6 +24,12 @@ let cache :any = {
             skill : [],
         }
     },
+    map : {
+        width : 0,
+        height : 0,
+        x : {min : 0, max : 0},
+        y : {min : 0, max : 0},
+    }
 }
 
 export default  cache

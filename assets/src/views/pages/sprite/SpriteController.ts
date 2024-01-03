@@ -1,10 +1,10 @@
-import { _decorator, Component, Node, Label, NodeEventType, find, BoxCollider2D, RigidBody2D, ERigidBody2DType, UITransform } from 'cc';
+import { _decorator, Component, Node, Label, NodeEventType, find, BoxCollider2D, RigidBody2D, ERigidBody2DType, UITransform, Color, ProgressBar } from 'cc';
 import cache, {getImages} from "db://assets/src/engine/cache";
 import {SpriteImagesController} from "db://assets/src/views/pages/sprite/SpriteImagesController";
 import {ChatController} from "db://assets/src/views/pages/sprite/ChatController";
 import {sprite} from "db://assets/src/sprite";
 import {CaiBongController} from "db://assets/src/views/pages/sprite/CaiBongController";
-import {coverImg} from "db://assets/src/engine/draw";
+import {coverColor, coverImg} from "db://assets/src/engine/draw";
 import {animationController} from "db://assets/src/views/pages/sprite/animationController";
 const { ccclass, property } = _decorator;
 
@@ -41,6 +41,11 @@ export class SpriteController extends Component {
 
     public size: object = {};
 
+    @property(ProgressBar)
+    public hp: ProgressBar = null;
+
+    @property(Node)
+    public click: Node = null;
 
     start() {
 
@@ -52,6 +57,10 @@ export class SpriteController extends Component {
         //this.updateMy();
     }
 
+    getOnly = async () => {
+        if(this.my.img === 'only') return await this.getSizeObject('animation');
+        return await this.getSizeObject('quan');
+    }
 
     getSizeObject = async (nameObject: string) => {
         let object = this[nameObject];
@@ -129,6 +138,32 @@ export class SpriteController extends Component {
         this.fullName.string = name;
         this.fullName.updateRenderData();
         this.fullName.node.setPosition(0, size);
+
+        let colorName = {
+            npc : "#fff200",
+            mob : "#ff0000",
+            player : "#f4ffe8",
+        }
+        let colorx = colorName[this.my.type];
+        this.fullName.color = coverColor(colorx);
+        this.fullName.updateRenderData();
+
+        if(this.hp)
+        {
+            let bar = this.hp.node;
+            bar.setPosition(0, this.fullName.node.getPosition().y + 20);
+        }
+
+        if(this.my.type === 'npc') {
+            this.hp.node.active = false;
+        }
+
+        if(this.click) {
+            this.click.setPosition(0, this.hp.node.getPosition().y + 20);
+        }
+
+
+
     }
 
     updateChat = (message:string) => {
@@ -335,6 +370,17 @@ export class SpriteController extends Component {
             this.animation.getComponent(animationController).updateAction(this.my.action.action);
             this.updateName(this.my.name);
         }
+        this.updateOnDat();
+    }
+
+    updateOnDat():void {
+        let my = this.my;
+        if((my.type === 'npc' || my.type === 'mob') && my.img === 'object') {
+            this.quan.getComponent(SpriteImagesController).updateOndat(my.type,my.pos, this);
+        }
+        if((my.type === 'npc' || my.type === 'mob') && my.img === 'only') {
+            this.animation.getComponent(animationController).updateOndat(my.type,my.pos, this);
+        }
     }
 
     updateAction = (action: string) => {
@@ -344,6 +390,8 @@ export class SpriteController extends Component {
     }
 
     update(deltaTime: number) {
+        let loading = find("UI/loading");
+        if(loading && loading.active === true) return;
         this.updatePlayer(deltaTime);
         if(this.my.pos && this.my.pos.y != this.node.getPosition().y) {
             this.my.pos.y = this.node.getPosition().y;

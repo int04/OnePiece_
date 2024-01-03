@@ -29,26 +29,38 @@ export class animationController extends Component {
         if(!animation) {
             animation = this.node.addComponent(Animation);
         }
+
+        let texture = await coverImg(this.script.script.src);
+        let farmes = [];
+
+        // @ts-ignore
+        let width = texture.width;
+        // @ts-ignore
+        let height = texture.height/this.script.script.num;
+        let fps = this.script.script.fps || 30;
+        this.node.getComponent(UITransform).setContentSize(width, height);
+        let scale = this.script.script.scale || [1,1];
+        this.node.setScale(scale[0], scale[1]);
+
         let clip = animation.getState(name_animation);
         if(!clip) {
             let isExist = assetManager.assets.get(name_animation) as AnimationClip;
             if(isExist) {
                 animation.addClip(isExist, name_animation);
                 animation.play(name_animation);
+                animation.playOnLoad = true;
+                animation.on('finished', () => {
+                    if(action != 'move' && action != 'dungyen') {
+                        this.updateAction('dungyen');
+                    }
+                })
                 return;
             }
-            let texture = await coverImg(this.script.script.src);
-            let farmes = [];
 
-            // @ts-ignore
-            let width = texture.width;
-            // @ts-ignore
-            let height = texture.height/this.script.script.num;
-            let fps = this.script.script.fps || 30;
-            this.node.getComponent(UITransform).setContentSize(width, height);
             let actions = this.script.script.action[action];
-            let scale = this.script.script.scale || [1,1];
-            this.node.setScale(scale[0], scale[1]);
+            if(!actions) actions = this.script.script.action['move'];
+            if(!actions) actions = this.script.script.action['dungyen'];
+
             if(actions) {
                 actions.forEach(i => {
                     let frame = crop(texture, 0, height*i, width, height);
@@ -57,7 +69,7 @@ export class animationController extends Component {
                 let clip = AnimationClip.createWithSpriteFrames(farmes, fps);
                 clip.name = name_animation;
                 if(action === 'dungyen' || action === 'move') {
-                    clip.wrapMode = AnimationClip.WrapMode.loop;
+                    clip.wrapMode = AnimationClip.WrapMode.Loop;
                 }
                 else {
                     clip.wrapMode = AnimationClip.WrapMode.Normal;
@@ -68,7 +80,9 @@ export class animationController extends Component {
                 animation.playOnLoad = true;
 
                 animation.on('finished', () => {
-                    this.updateAction('dungyen');
+                    if(action != 'move' && action != 'dungyen') {
+                        this.updateAction('dungyen');
+                    }
                 })
                 // add to cache
                 assetManager.assets.add(name_animation, clip);

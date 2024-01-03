@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Label, NodeEventType, find, BoxCollider2D, RigidBody2D, ERigidBody2DType, UITransform, Color, ProgressBar } from 'cc';
+import { _decorator, Component, Node, Label, NodeEventType, find, BoxCollider2D, RigidBody2D, ERigidBody2DType, UITransform, Color, ProgressBar, tween } from 'cc';
 import cache, {getImages} from "db://assets/src/engine/cache";
 import {SpriteImagesController} from "db://assets/src/views/pages/sprite/SpriteImagesController";
 import {ChatController} from "db://assets/src/views/pages/sprite/ChatController";
@@ -339,6 +339,7 @@ export class SpriteController extends Component {
         }
         else {
             let src = this.my.scripts.script.src;
+            console.log(this.my.scripts)
             await coverImg(src);
         }
         this.realy = true;
@@ -386,24 +387,144 @@ export class SpriteController extends Component {
     updateAction = (action: string) => {
         if(this.my.action.action === action) return;
         this.my.action.action = action;
-        this.updateSpriteFrame();
+        if(this.my.img === 'only') {
+            console.log(action)
+            this.animation.getComponent(animationController).updateAction(this.my.action.action);
+        }
+        else {
+            this.updateSpriteFrame();
+        }
     }
 
+    private updatecaiBong:boolean = false;
     update(deltaTime: number) {
         let loading = find("UI/loading");
         if(loading && loading.active === true) return;
         this.updatePlayer(deltaTime);
-        if(this.my.pos && this.my.pos.y != this.node.getPosition().y) {
-            this.my.pos.y = this.node.getPosition().y;
+        if(this.updatecaiBong === false) {
+            this.updatecaiBong = true;
             this.caiBong.updateThat();
         }
+
         if(cache.click === this.my.id) {
             this.click.active = true;
         }
         else {
             this.click.active = false;
         }
+        this.updateMove(deltaTime)
+    }
 
+    private jumUp: boolean = false;
+    private vOld: number = 0;
+    private roitudo: number = 0;
+    private timeRoitudo : number = 0;
+    public updateMove(deltaTime: number): void {
+        let my = this.my;
+        if(my.id == cache.my.id) return;
+        let posOld = this.node.getPosition();
+        let posNew = my.pos;
+        if(posNew.x != posOld.x || posNew.y != posOld.y) {
+            let speed = my.info.coban.speed * 60;
+            let action = '';
+
+            let x = posOld.x;
+            let y = posOld.y;
+
+            let xNew = posNew.x;
+            let yNew = posNew.y;
+
+            if((xNew != x || yNew != y) && (my.action.action === 'nhay' || my.action.action === 'roi' || my.action.action === 'dungyen' || my.action.action === 'move')) {
+                if(yNew > y) {
+                    // nhảy lên
+                    if(this.jumUp === false) {
+                        this.jumUp = true;
+                        this.vOld = 0;
+                        let clone = this.node.getPosition().clone();
+                        tween(clone).
+                        to(300,
+                            {y: yNew },
+                            { easing: 'quartOut',onUpdate : () => {
+                                    let pos = this.node.getPosition();
+                                    pos.y = clone.y;
+                                    this.node.setPosition(pos);
+                                    //this.updateAction('nhay');
+                                },onComplete : () => {
+                                    this.roitudo = 0;
+                                    this.jumUp = false;
+                                    this.updateAction('roi');
+                                }}
+                        ).start()
+
+                    }
+                }
+                else if(yNew < y) {
+                    // rơi xuống
+                    this.updateAction('roi');
+                    this.vOld+= deltaTime;
+                    let v = 9.8 * this.vOld + (96*0.8)/2 * this.vOld;
+                    let pos = this.node.getPosition();
+                    this.roitudo = 1;
+                    pos.y -= v;
+                    this.node.setPosition(pos);
+                    if(pos.y <= yNew) {
+                        pos.y = yNew;
+                        this.node.setPosition(pos);
+                        this.vOld = 0;
+                        this.roitudo = 0;
+                        this.updateAction('dungyen');
+                    }
+                }
+
+                if(xNew > x) {
+                    this.upDataMove('right');
+                    let pos = this.node.getPosition();
+                    pos.x += speed * deltaTime;
+                    this.node.setPosition(pos);
+                    if(pos.x > xNew) {
+                        pos.x = xNew;
+                        this.node.setPosition(pos);
+                        this.updateAction('dungyen');
+                    }
+                    else {
+                        if(this.roitudo === 1) {
+                            this.updateAction('roi');
+                        }
+                        else {
+                            this.updateAction('move');
+
+                        }
+                    }
+                }
+                else if(xNew < x) {
+                    this.upDataMove('left');
+                    let pos = this.node.getPosition();
+                    pos.x -= speed * deltaTime;
+                    this.node.setPosition(pos);
+                    if(pos.x < xNew) {
+                        pos.x = xNew;
+                        this.node.setPosition(pos);
+                        this.updateAction('dungyen');
+                    }
+                    else {
+                        if(this.roitudo === 1) {
+                            this.updateAction('roi');
+                        }
+                        else {
+                            this.updateAction('move');
+                        }
+                    }
+                }
+            }
+
+
+            if(my.img === 'object') {
+
+            }
+            else {
+
+            }
+        }
     }
 }
 

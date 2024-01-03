@@ -119,6 +119,36 @@ export function listPlayer(data : object): void {
         createSprite(my);
     })
 
+    let mobs = data['mob'];
+    mobs.forEach(mob => {
+        let my : any = {};
+        my.scripts = mob.data;
+        my.id = mob.id;
+        my.pos = {
+            x : mob.x,
+            y : mob.y,
+            zone : mob.zone,
+            map : mob.map,
+        }
+        my.name = mob.data.name;
+        my.info = mob.info;
+        my.eff = mob.eff;
+        my.info.coban = mob.coban || {};
+        my.info.coban.speed = mob.data.speed || 1;
+        my.img = mob.data.script.type;
+        if( mob.data.script.type === 'img') {
+            my.skin = {};
+            for(let name in mob.data.script) {
+                if(name !== 'type') {
+                    my.skin[name] = mob.data.script[name];
+                }
+            }
+            my.img = 'object';
+        }
+        my.type = 'mob';
+        createSprite(my);
+    });
+
 }
 
 

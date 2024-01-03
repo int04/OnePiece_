@@ -17,7 +17,10 @@ export class ChatController extends Component {
 
 
     public resetChat(): void {
-        this.node.removeAllChildren();
+        let list = this.node.children;
+        list.forEach(e => {
+            e.destroy();
+        });
     }
     async createChat (text : string): Promise<void> {
 
@@ -133,7 +136,6 @@ export class ChatController extends Component {
     autoChat(time:number): void {
         if(this.script === null) {
             this.script = this.sprite.getComponent(SpriteController).my.scripts;
-            console.log(this.script)
             this.timeDelay = this.script.delaychat || 4000;
             this.listChat = this.script.chat;
         }

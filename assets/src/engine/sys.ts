@@ -28,6 +28,10 @@ let time = (): number => {
     return sys.now();
 }
 
+export function getTime(): number {
+    return time();
+}
+
 let random = (min: number, max: number): number => {
     return math.randomRangeInt(min, max);
 }

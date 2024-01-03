@@ -397,6 +397,12 @@ export class SpriteController extends Component {
             this.my.pos.y = this.node.getPosition().y;
             this.caiBong.updateThat();
         }
+        if(cache.click === this.my.id) {
+            this.click.active = true;
+        }
+        else {
+            this.click.active = false;
+        }
 
     }
 }

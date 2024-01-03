@@ -1,15 +1,20 @@
 import { _decorator, Component, Node, Label, Graphics, UITransform, Color, instantiate } from 'cc';
 import {coverColor} from "db://assets/src/engine/draw";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
+import {getTime, random} from "db://assets/src/engine/sys";
 const { ccclass, property } = _decorator;
 
 @ccclass('ChatController')
 export class ChatController extends Component {
+    @property(Node)
+    public sprite: Node = null;
+
     start() {
 
     }
     public chat:boolean = false;
     public time: number = 0;
+
 
     public resetChat(): void {
         this.node.removeAllChildren();
@@ -119,12 +124,67 @@ export class ChatController extends Component {
 
     }
 
+    private script: any = null;
+    private listChat : any = null;
+    private timeDelay: number = 0;
+    private lamtho: number = -1;
+    private lamthoID: number = -1;
+    private timeAwait: number = 0;
+    autoChat(time:number): void {
+        if(this.script === null) {
+            this.script = this.sprite.getComponent(SpriteController).my.scripts;
+            console.log(this.script)
+            this.timeDelay = this.script.delaychat || 4000;
+            this.listChat = this.script.chat;
+        }
+        if(typeof this.listChat === 'undefined' || this.listChat.length <= 0) return;
+
+        if(this.chat === true || this.timeAwait > getTime()) {
+            return;
+        }
+        let lay;
+        let listnoidung = this.listChat;
+        if(this.lamtho >=0)  {
+            lay = listnoidung[this.lamthoID];
+            lay = lay[this.lamtho];
+            this.lamtho++;
+            if(lay === undefined) {
+                this.lamtho = -1;
+                this.lamthoID = -1;
+            }
+        }
+        else {
+            let i = random(0, listnoidung.length - 1);
+            lay = listnoidung[i];
+            if(typeof lay === 'object') {
+                lay = lay[0];
+                this.lamtho = 1;
+                this.lamthoID = i;
+            }
+        }
+
+        if(lay) {
+            this.createChat(lay);
+            this.timeAwait = getTime() + this.timeDelay;
+        }
+
+    }
+
+    private type: string = null;
     update(deltaTime: number) {
         if(this.chat === true) {
             this.time += deltaTime;
             if(this.time > 5) {
                 this.resetChat();
                 this.chat = false;
+            }
+        }
+        if(this.type === null) {
+            this.type = this.sprite.getComponent(SpriteController).my.type;
+        }
+        else {
+            if(this.type  === 'npc' || this.type === 'mob') {
+                this.autoChat(deltaTime);
             }
         }
     }

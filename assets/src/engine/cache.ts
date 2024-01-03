@@ -30,7 +30,8 @@ let cache :any = {
         height : 0,
         x : {min : 0, max : 0},
         y : {min : 0, max : 0},
-    }
+    },
+    click : null,
 }
 
 export default  cache

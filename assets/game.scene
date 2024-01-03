@@ -2492,6 +2492,9 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "sprite": {
+      "__id__": 12
+    },
     "_id": "fc/fUScV9PuolYNIOuO6cn"
   },
   {
@@ -38827,6 +38830,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "sprite": null,
     "_id": "ea1zlmPGdLvpbBNGKl4pRT"
   },
   {

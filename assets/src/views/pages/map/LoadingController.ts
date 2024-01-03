@@ -32,7 +32,7 @@ export class LoadingController extends Component {
             }
 
             assetManager.loadAny({url : url, type : TiledMap}, (err, data) => {
-                assetManager.assets.add(url, data);
+               // assetManager.assets.add(url, data);
                 res(data);
             });
         });

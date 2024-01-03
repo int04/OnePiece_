@@ -22,7 +22,8 @@ let cache :any = {
         exp : {
             level : [],
             skill : [],
-        }
+        },
+        map : [],
     },
     map : {
         width : 0,

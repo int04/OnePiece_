@@ -4,6 +4,8 @@ import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteControl
 import {getTile} from "db://assets/src/views/pages/map/getTile";
 import {exportTitled} from "db://assets/src/views/pages/map/exportTiled";
 import {LoadingController} from "db://assets/src/views/pages/map/LoadingController";
+import socket from "db://assets/src/engine/socket";
+import {loading, notice} from "db://assets/src/engine/UI";
 const { ccclass, property } = _decorator;
 
 export function resetAll() {
@@ -56,27 +58,68 @@ export function createSprite(my : any) {
 }
 
 export function goto(id: any, zone : any = null, x: any = null, y: any = null) {
+    loading();
+    socket().send(-2,[1, [id, zone, x, y]]);
+}
+
+export function updatePos(id: any, zone : any = null, x: any = null, y: any = null) {
     cache.my.pos.map = id;
-    loadMap('map6')
-    return;
     if(x !== null && y !== null) {
         // @ts-ignore
-        if(self.my.id >=1) {
+        if(cache.my.id != null) {
             // @ts-ignore
-            let sprite = self.getSprite(self.my.id);
-            sprite.x = x;
-            sprite.y = y;
+            cache.my.pos.x = x;
             // @ts-ignore
-            self.my.pos.x = x;
-            // @ts-ignore
-            self.my.pos.y = y;
+            cache.my.pos.y = y;
+            let sprite = getSprite(cache.my.id);
+            if(sprite) {
+                let pos = sprite.getPosition();
+                pos.x = x;
+                pos.y = y;
+                sprite.setPosition(pos);
+            }
         }
     }
 }
 
 
+export function listPlayer(data : object): void {
+    let npcs = data['npc'];
+    npcs.forEach(npc => {
+        let my : any = {
+            id : npc.id,
+            name : npc.name,
+            pos : {
+                x : npc.pos[0],
+                y : npc.pos[1],
+            },
+            action : {
+                action : 'dungyen',
+                move : 'left'
+            },
+            skin: {},
+            scripts : npc,
+            img : 'object',
+        };
 
+        my.type = 'npc';
+        if(npc.script && npc.script.type === 'img') {
+            my.img = 'object';
+            for(let name in npc.script) {
+                if(name !== 'type') {
+                    my.skin[name] = npc.script[name];
+                }
+            }
+        }
 
+        if(npc.script && npc.script.type === 'only') {
+            my.img = 'only';
+        }
+
+        createSprite(my);
+    })
+
+}
 
 
 export async function loadMap(name:string): Promise<any> {

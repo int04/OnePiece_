@@ -7,7 +7,7 @@ const { ccclass, property } = _decorator;
 import {default as cccc} from 'db://assets/lib/socketv4.js';
 import {loginController} from "db://assets/src/views/pages/loginController";
 import {SelectPlayerController} from "db://assets/src/views/pages/SelectPlayerController";
-import {createSprite, goto, resetAll} from "../views/pages/MapController";
+import {createSprite, goto, listPlayer, loadMap, resetAll, updatePos} from "../views/pages/MapController";
 @ccclass('webSocket')
 export class webSocket extends Component {
     private ws: Socket = null;
@@ -50,6 +50,7 @@ export class webSocket extends Component {
             console.log(data);
             cache.server.exp.level = data?.exp?.levelPlayer;
             cache.server.exp.skill = data?.exp?.skillPlayer;
+            cache.server.map = data?.map; // # list map
         });
         this.ws.on('connect', (data: any) => {
             this.connected = true;
@@ -152,6 +153,38 @@ export class webSocket extends Component {
             resetAll();
             createSprite(value);
             goto(value.pos.map, null, value.pos.x, value.pos.y);
+        });
+
+
+        this.ws.on('e', (value: string) => {
+            deleteNotice();
+            switch(value) {
+                case 'not_map':
+                    notice('Có lỗi xảy ra khi tải bản đồ....');
+                    break;
+            }
+        });
+
+
+        this.ws.on('map', (data: object) => {
+            let status = data[0];
+            if(status === true) {
+                let pos = data[1];
+                updatePos(pos[0],pos[1],pos[2],pos[3]);
+                let idmap = pos[0];
+                let map = cache.server.map.find(e => e.id === idmap);
+                if(map) {
+                    let namesheet = map.map;
+                    loadMap(namesheet);
+                    let data2 = data[2];
+                    if(data2) {
+                        listPlayer(data2);
+                    }
+                }
+                else {
+                    notice('Vui lòng thoát game và vào lại...');
+                }
+            }
         });
 
     }

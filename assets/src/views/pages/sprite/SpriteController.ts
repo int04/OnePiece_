@@ -1,9 +1,11 @@
-import { _decorator, Component, Node, Label, NodeEventType, find, BoxCollider2D, RigidBody2D, ERigidBody2DType } from 'cc';
+import { _decorator, Component, Node, Label, NodeEventType, find, BoxCollider2D, RigidBody2D, ERigidBody2DType, UITransform } from 'cc';
 import cache, {getImages} from "db://assets/src/engine/cache";
 import {SpriteImagesController} from "db://assets/src/views/pages/sprite/SpriteImagesController";
 import {ChatController} from "db://assets/src/views/pages/sprite/ChatController";
 import {sprite} from "db://assets/src/sprite";
 import {CaiBongController} from "db://assets/src/views/pages/sprite/CaiBongController";
+import {coverImg} from "db://assets/src/engine/draw";
+import {animationController} from "db://assets/src/views/pages/sprite/animationController";
 const { ccclass, property } = _decorator;
 
 @ccclass('SpriteController')
@@ -34,6 +36,9 @@ export class SpriteController extends Component {
     @property(Node)
     public chat: Node = null;
 
+    @property(Node)
+    public animation: Node = null;
+
     public size: object = {};
 
 
@@ -50,6 +55,22 @@ export class SpriteController extends Component {
 
     getSizeObject = async (nameObject: string) => {
         let object = this[nameObject];
+
+        if(nameObject === 'animation') {
+            if(object.getContentSize().width === -1) {
+                return  new Promise(async (res, fai) => {
+                    setTimeout(async () => {
+                        res(await this.getSizeObject(nameObject));
+                    },100);
+                })
+            }
+            return {
+                width : object.getContentSize().width * object.getScale().x,
+                height : object.getContentSize().height * object.getScale().y,
+                x : 0,
+                y : 1,
+            }
+        }
         let size = await object.getComponent(SpriteImagesController).getSize();
         if(size.width === 0 || size.height === 0) {
            return  new Promise(async (res, fai) => {
@@ -62,24 +83,42 @@ export class SpriteController extends Component {
     }
 
     caculatorSize = async () => {
-        let objectNeed = ["ao", "quan", "dau"];
         let size = {
             width : 0,
             height : 0,
-            y : 0
+            y : 1
         }
-        for(let i = 0; i < objectNeed.length; i++) {
-            let name = objectNeed[i];
-            let sizeObject = await this.getSizeObject(name);
-            if(sizeObject.width > size.width) size.width = sizeObject.width;
-            if(sizeObject.y < size.y) size.y = sizeObject.y;
-            size.height += sizeObject.height;
+        if(this.my.img === 'only')
+        {
+            let objectNeed = ["animation"];
+
+            for(let i = 0; i < objectNeed.length; i++) {
+                let name = objectNeed[i];
+                let sizeObject = await this.getSizeObject(name);
+                if(sizeObject.width > size.width) size.width = sizeObject.width;
+                if(sizeObject.y < size.y) size.y = sizeObject.y;
+                size.height += sizeObject.height;
+            }
+            size.y = 1;
+        }
+        else {
+            let objectNeed = ["ao", "quan", "dau"];
+
+            for(let i = 0; i < objectNeed.length; i++) {
+                let name = objectNeed[i];
+                let sizeObject = await this.getSizeObject(name);
+                if(sizeObject.width > size.width) size.width = sizeObject.width;
+                if(sizeObject.y < size.y) size.y = sizeObject.y;
+                size.height += sizeObject.height;
+            }
         }
         return size;
     }
 
     updateName = async (name: string) => {
-        let wait = await this.getSizeObject('dau');
+        let wait;
+        if(this.my.img === 'only') wait = await this.getSizeObject('animation');
+        else wait = await this.getSizeObject('dau');
         if(wait.y == 0) {
             setTimeout(() => {
                 this.updateName(name);
@@ -155,20 +194,16 @@ export class SpriteController extends Component {
         });
     }
 
-    updateAction = (action: string) => {
-        if(this.my.action.action === action) return;
-        this.my.action.action = action;
-        this.updateSpriteFrame();
-    }
+
 
     private timeAwait: number = 0;
     private updateSprite:boolean = false;
     private playerAddCollision:boolean = false;
     updatePlayer(deltaTime: number): void {
-        if(this.my.type != 'player') return;
         if(this.playerAddCollision === false) {
             this.createCollision2d();
         }
+        if(this.my.img !== 'object' && this.my.type != 'player') return;
         this.timeAwait += deltaTime;
         if(this.timeAwait < 0.3) return;
         this.timeAwait = 0;
@@ -184,14 +219,7 @@ export class SpriteController extends Component {
         this.body.setPosition(pos);
     }
 
-    update(deltaTime: number) {
-        this.updatePlayer(deltaTime);
-        if(this.my.pos.y != this.node.getPosition().y) {
-            this.my.pos.y = this.node.getPosition().y;
-            this.caiBong.updateThat();
-        }
 
-    }
 
     private async createCollision2d():Promise<void> {
         this.playerAddCollision = true;
@@ -240,15 +268,88 @@ export class SpriteController extends Component {
         }
     }
 
-    createSprite(my : any) :void {
+    private realy: boolean = false;
+    public async loadAssets(): Promise<void> {
+        let list = [];
+        let PromiseList = [];
+        if(this.my.img === 'object') {
+            let skin = this.my.skin;
+            if(skin.id && skin.id.length >=1) {
+                let id = skin.id;
+                let get = cache.images.filter(e => e.id === id);
+                get.forEach(e => {
+                    let name = e.name;
+                    let type = e.type;
+                    this.my.skin[type] = name;
+                })
+            }
+            let objectNeed = ["ao", "quan", "lung", "tay", "dau", "toc", "mu"];
+            objectNeed.forEach((e) => {
+                let name = this.my.skin[e];
+                let images = cache.images.find(e => e.name === name);
+                if(images) {
+                    let actions = images.actions;
+                    for(let action in actions) {
+                        let src = actions[action][0];
+                        src.forEach(ex => {
+                            if(list.find(x => x === ex) === undefined) list.push(ex);
+                        });
+                    }
+                }
+            });
+            list.forEach(e => {
+                PromiseList.push(coverImg(e));
+            })
+            await Promise.all(PromiseList);
+        }
+        else {
+            let src = this.my.scripts.script.src;
+            await coverImg(src);
+        }
+        this.realy = true;
+    }
+    async createSprite(my : any) :Promise<void> {
         this.my = my;
         this.my.action = this.my.action || {};
         this.my.action.action = this.my.action.action || 'dungyen';
         this.my.action.move = this.my.action.move || 'left';
-        if(this.my.type === 'player') {
+        this.my.img = this.my.img || 'object';
+        await this.loadAssets();
+        if(this.my.img === 'object') {
             this.updateName(this.my.name);
             this.updateSpriteFrame();
         }
+        else {
+            this.ao.active = false;
+            this.quan.active = false;
+            this.dau.active = false;
+            this.lung.active = false;
+            this.tay.active = false;
+            this.toc.active = false;
+            this.mu.active = false;
+            this.animation.getComponent(animationController).updateScript({
+                type : this.my.type,
+                data : this.my.scripts,
+                id : this.my.id,
+            });
+            this.animation.getComponent(animationController).updateAction(this.my.action.action);
+            this.updateName(this.my.name);
+        }
+    }
+
+    updateAction = (action: string) => {
+        if(this.my.action.action === action) return;
+        this.my.action.action = action;
+        this.updateSpriteFrame();
+    }
+
+    update(deltaTime: number) {
+        this.updatePlayer(deltaTime);
+        if(this.my.pos && this.my.pos.y != this.node.getPosition().y) {
+            this.my.pos.y = this.node.getPosition().y;
+            this.caiBong.updateThat();
+        }
+
     }
 }
 

@@ -259,6 +259,8 @@ export class gameController extends Component {
     }
 
     update(deltaTime: number) {
+        let loading = find("UI/loading");
+        if(loading && loading.active === true) return;
         if(cache.my.id != null) {
 
             if(this.nhanvat === null) {

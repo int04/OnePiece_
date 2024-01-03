@@ -17,3 +17,10 @@ export function deleteNotice(): void {
     let search: Node = find("UI/notice");
     search?.getComponent('noticeController').deleteNotice();
 }
+
+export function loading(show: boolean = true): void {
+    let load : Node = find("UI/loading");
+    if(load) {
+        load.active = show;
+    }
+}

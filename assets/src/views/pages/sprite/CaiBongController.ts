@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, find, BoxCollider2D, Intersection2D, Vec3 } from 'cc';
+import { _decorator, Component, Node, find, BoxCollider2D, Intersection2D, Vec3, UITransform } from 'cc';
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 const { ccclass, property } = _decorator;
 
@@ -12,11 +12,23 @@ export class CaiBongController extends Component {
 
     }
 
-    checkChamDat(): boolean {
+    async checkChamDat(): Promise<boolean> {
         let map = find("game/dat");
         // @ts-ignore
         let sprite = this.sprite.getComponent(SpriteController).getComponent(BoxCollider2D);
-        if(sprite === null) return false;
+        if(!sprite) return true;
+
+        let pos = this.node.getPosition();
+
+
+        let size = await  this.sprite.getComponent(SpriteController).getOnly();
+
+        pos.y = 0 - size.height/2 + 5;
+
+        this.node.setPosition(pos);
+
+
+        if(sprite === null) return true;
         for(let i = 0; i < map.children.length; i++) {
             let name = map.children[i].name;
             if(name === 'dat') {
@@ -35,11 +47,13 @@ export class CaiBongController extends Component {
 
 
     async updateThat(): Promise<void> {
-        if(this.checkChamDat()) {
-            this.node.active = true;
+        let value:boolean = await this.checkChamDat();
+        if(value) {
+           // this.node.active = true;
             return
         }
-        this.node.active = false;
+        console.log('không hd')
+       // this.node.active = false;
 
 
     }

@@ -1,6 +1,7 @@
-import { _decorator, Component, Node, UITransform, Sprite, SpriteFrame, BoxCollider2D, RigidBody2D, ERigidBody2DType } from 'cc';
+import { _decorator, Component, Node, UITransform, Sprite, SpriteFrame, BoxCollider2D, RigidBody2D, ERigidBody2DType, find } from 'cc';
 import cache, {getImages, getImagesIndex} from "db://assets/src/engine/cache";
 import {coverSpriteFrame} from "db://assets/src/engine/draw";
+import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 const { ccclass, property } = _decorator;
 
 @ccclass('SpriteImagesController')
@@ -117,6 +118,48 @@ export class SpriteImagesController extends Component {
                 this.skinIndex[name] = -1;
             }
         }
+    }
+
+    public caculatorDXDY(position1 : object, position2 : object) : number {
+        let dx  = position1['x'] - position2['x'];
+        let dy  = position1['y'] - position2['y'];
+        let d = Math.sqrt(dx*dx + dy*dy);
+        return d;
+    }
+
+    public async updateOndat(type: string, position : any, self : any): Promise<any> {
+        let loading = find("UI/loading");
+        if(loading && loading.active === true) return setTimeout(() => {
+            this.updateOndat(type, position, self);
+        },100);
+        let dat: Node = find("game/dat");
+        let k : number = null;
+        let dx : number = null;
+        for(let i = 0; i < dat.children.length; i++) {
+            if(dat.children[i].name !== 'dat') continue;
+            let pos = dat.children[i].getPosition();
+            let d = this.caculatorDXDY(position, pos);
+            if(dx === null || dx > d) {
+                dx = d;
+                k = i;
+            }
+        }
+        let data  = {
+            y :  dat.children[k].getPosition().y,
+            height : dat.children[k].getComponent(UITransform).height,
+        };
+        let quanSize = await this.getSize();
+        let pos = position;
+
+        let bouns = 10;
+        if(type ==='mob') {
+            bouns = 28;
+        }
+
+        pos.y = data.y + data.height/2 + quanSize.height/2 - bouns;
+        pos.z = 0;
+        self.node.setPosition(pos);
+
     }
 
     getSize(): any {

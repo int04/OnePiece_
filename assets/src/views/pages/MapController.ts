@@ -26,7 +26,11 @@ export function reset() {
     });
 }
 
-export let getSprite = (id: any) => {
+export let getSprite = (id: any = null) => {
+    if(id === null) {
+        id = cache.my.id;
+    }
+    if(id === null) return null;
     if(typeof id === 'number') {
         id = id.toString();
     }

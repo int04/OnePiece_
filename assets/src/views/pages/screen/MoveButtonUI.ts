@@ -12,6 +12,7 @@ export class MoveButtonUI extends Component {
     private right: Node = null;
     @property(gameController)
     private gameController: gameController = null;
+
     start() {
         this.node.active = true;
         this.createEvent(this.up, 38);

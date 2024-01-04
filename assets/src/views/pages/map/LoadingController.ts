@@ -49,7 +49,6 @@ export class LoadingController extends Component {
                 return res(isExist)
             }
             assetManager.loadRemote(fullurl, (err, images) => {
-                // cover to texture
                 let texture = new Texture2D();
                 // @ts-ignore
                 texture.image = images;

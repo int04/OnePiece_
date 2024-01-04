@@ -6,6 +6,7 @@ import {sprite} from "db://assets/src/sprite";
 import {CaiBongController} from "db://assets/src/views/pages/sprite/CaiBongController";
 import {coverColor, coverImg} from "db://assets/src/engine/draw";
 import {animationController} from "db://assets/src/views/pages/sprite/animationController";
+import {random} from "db://assets/src/engine/sys";
 const { ccclass, property } = _decorator;
 
 @ccclass('SpriteController')
@@ -223,7 +224,7 @@ export class SpriteController extends Component {
     updateClick = (event: Function) => {
         let objectNeed = ["ao", "quan", "lung", "tay", "dau", "toc", "mu"];
         objectNeed.forEach((e) => {
-            this[e].on(NodeEventType.TOUCH_START, () => {
+            this[e].on(NodeEventType.TOUCH_START, (ez) => {
                 event(e);
             }, this)
         });
@@ -388,7 +389,6 @@ export class SpriteController extends Component {
         if(this.my.action.action === action) return;
         this.my.action.action = action;
         if(this.my.img === 'only') {
-            console.log(action)
             this.animation.getComponent(animationController).updateAction(this.my.action.action);
         }
         else {
@@ -406,12 +406,15 @@ export class SpriteController extends Component {
             this.caiBong.updateThat();
         }
 
-        if(cache.click === this.my.id) {
-            this.click.active = true;
+        if(this.click) {
+            if(cache.click === this.my.id) {
+                this.click.active = true;
+            }
+            else {
+                this.click.active = false;
+            }
         }
-        else {
-            this.click.active = false;
-        }
+
         this.updateMove(deltaTime)
     }
 
@@ -425,7 +428,7 @@ export class SpriteController extends Component {
         let posOld = this.node.getPosition();
         let posNew = my.pos;
         if(posNew.x != posOld.x || posNew.y != posOld.y) {
-            let speed = my.info.coban.speed * 60;
+            let speed = my.info?.coban?.speed * 60 || 240;
             let action = '';
 
             let x = posOld.x;
@@ -435,44 +438,47 @@ export class SpriteController extends Component {
             let yNew = posNew.y;
 
             if((xNew != x || yNew != y) && (my.action.action === 'nhay' || my.action.action === 'roi' || my.action.action === 'dungyen' || my.action.action === 'move')) {
-                if(yNew > y) {
-                    // nhảy lên
-                    if(this.jumUp === false) {
-                        this.jumUp = true;
-                        this.vOld = 0;
-                        let clone = this.node.getPosition().clone();
-                        tween(clone).
-                        to(300,
-                            {y: yNew },
-                            { easing: 'quartOut',onUpdate : () => {
-                                    let pos = this.node.getPosition();
-                                    pos.y = clone.y;
-                                    this.node.setPosition(pos);
-                                    //this.updateAction('nhay');
-                                },onComplete : () => {
-                                    this.roitudo = 0;
-                                    this.jumUp = false;
-                                    this.updateAction('roi');
-                                }}
-                        ).start()
 
+                if(this.my.type === 'player') {
+                    if(yNew > y) {
+                        // nhảy lên
+                        if(this.jumUp === false) {
+                            this.jumUp = true;
+                            this.vOld = 0;
+                            let clone = this.node.getPosition().clone();
+                            tween(clone).
+                            to(300,
+                                {y: yNew },
+                                { easing: 'quartOut',onUpdate : () => {
+                                        let pos = this.node.getPosition();
+                                        pos.y = clone.y;
+                                        this.node.setPosition(pos);
+                                        //this.updateAction('nhay');
+                                    },onComplete : () => {
+                                        this.roitudo = 0;
+                                        this.jumUp = false;
+                                        this.updateAction('roi');
+                                    }}
+                            ).start()
+
+                        }
                     }
-                }
-                else if(yNew < y) {
-                    // rơi xuống
-                    this.updateAction('roi');
-                    this.vOld+= deltaTime;
-                    let v = 9.8 * this.vOld + (96*0.8)/2 * this.vOld;
-                    let pos = this.node.getPosition();
-                    this.roitudo = 1;
-                    pos.y -= v;
-                    this.node.setPosition(pos);
-                    if(pos.y <= yNew) {
-                        pos.y = yNew;
+                    else if(yNew < y) {
+                        // rơi xuống
+                        this.updateAction('roi');
+                        this.vOld+= deltaTime;
+                        let v = 9.8 * this.vOld + (96*0.8)/2 * this.vOld;
+                        let pos = this.node.getPosition();
+                        this.roitudo = 1;
+                        pos.y -= v;
                         this.node.setPosition(pos);
-                        this.vOld = 0;
-                        this.roitudo = 0;
-                        this.updateAction('dungyen');
+                        if(pos.y <= yNew) {
+                            pos.y = yNew;
+                            this.node.setPosition(pos);
+                            this.vOld = 0;
+                            this.roitudo = 0;
+                            this.updateAction('dungyen');
+                        }
                     }
                 }
 
@@ -515,6 +521,8 @@ export class SpriteController extends Component {
                         }
                     }
                 }
+
+
             }
 
 

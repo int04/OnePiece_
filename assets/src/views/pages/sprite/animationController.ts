@@ -8,18 +8,6 @@ export class animationController extends Component {
     public type : string = 'npc';
     public id : string = '';
     start() {
-    }
-
-    updateScript(script):void {
-        this.script = script.data;
-        this.type = script.type;
-        this.id = script.id;
-    }
-
-    async updateAction(action: string = 'dungyen'): Promise<void> {
-        let name_animation= this.script.script.src + '_' + action;
-        // check exitst animation from node
-
         let sprite = this.node.getComponent(Sprite);
         if(!sprite) {
             sprite = this.node.addComponent(Sprite);
@@ -29,6 +17,21 @@ export class animationController extends Component {
         if(!animation) {
             animation = this.node.addComponent(Animation);
         }
+    }
+
+    updateScript(script):void {
+        this.script = script.data;
+        this.type = script.type;
+        this.id = script.id;
+    }
+
+    private oldCLip: string = '';
+
+    async updateAction(action: string = 'dungyen'): Promise<void> {
+        let name_animation= this.script.script.src + '_' + action;
+        // check exitst animation from node
+
+        let animation = this.node.getComponent(Animation);
 
         let texture = await coverImg(this.script.script.src);
         let farmes = [];
@@ -37,24 +40,20 @@ export class animationController extends Component {
         let width = texture.width;
         // @ts-ignore
         let height = texture.height/this.script.script.num;
-        let fps = this.script.script.fps || 30;
+        let fps = this.script.script.fps || 25;
         this.node.getComponent(UITransform).setContentSize(width, height);
         let scale = this.script.script.scale || [1,1];
         this.node.setScale(scale[0], scale[1]);
+
+        // stop all animation
+        animation.stop();
 
         let clip = animation.getState(name_animation);
         if(!clip) {
             let isExist = assetManager.assets.get(name_animation) as AnimationClip;
             if(isExist) {
                 animation.addClip(isExist, name_animation);
-                animation.play(name_animation);
-                animation.playOnLoad = true;
-                animation.on('finished', () => {
-                    if(action != 'move' && action != 'dungyen') {
-                        this.updateAction('dungyen');
-                    }
-                })
-                return;
+                return this.updateAction(action);
             }
 
             let actions = this.script.script.action[action];
@@ -76,20 +75,33 @@ export class animationController extends Component {
                 }
                 clip.speed = 0.1;
                 animation.addClip(clip, name_animation);
-                animation.play(name_animation);
-                animation.playOnLoad = true;
-
-                animation.on('finished', () => {
-                    if(action != 'move' && action != 'dungyen') {
-                        this.updateAction('dungyen');
-                    }
-                })
                 // add to cache
                 assetManager.assets.add(name_animation, clip);
+
+
+                return this.updateAction(action);
             }
         }
         else {
-            animation.play(name_animation);
+
+            // get animation move, dungyen
+
+
+            if(this.oldCLip.length >=1) {
+                animation.getState(this.oldCLip).stop();
+            }
+            this.oldCLip = name_animation;
+
+            let ani = animation.getState(name_animation);
+            ani.speed = 0.3
+            ani.play();
+
+            ani.on('finished', () => {
+                setTimeout(() => {
+                    this.updateAction('dungyen');
+                },100);
+            });
+
         }
 
     }

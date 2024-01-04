@@ -182,6 +182,7 @@ export class ChatController extends Component {
             }
         }
         if(this.type === null) {
+            if(this.sprite)
             this.type = this.sprite.getComponent(SpriteController).my.type;
         }
         else {

@@ -25,5 +25,20 @@
       "fitWidth": true
     },
     "highQuality": false
+  },
+  "sorting-layer": {
+    "layers": [
+      {
+        "id": 0,
+        "name": "default",
+        "value": 0
+      },
+      {
+        "id": 1,
+        "name": "playchinh",
+        "value": 1
+      }
+    ],
+    "increaseId": 1
   }
 }

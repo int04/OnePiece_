@@ -9,6 +9,7 @@ import {loginController} from "db://assets/src/views/pages/loginController";
 import {SelectPlayerController} from "db://assets/src/views/pages/SelectPlayerController";
 import {createSprite, getSprite, goto, listPlayer, loadMap, resetAll, updatePos} from "../views/pages/MapController";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
+import {setSkill} from "db://assets/src/views/pages/skills/skillController";
 @ccclass('webSocket')
 export class webSocket extends Component {
     private ws: Socket = null;
@@ -339,14 +340,14 @@ export class webSocket extends Component {
             {
                 this.getObjectMap();
             }
-            /*
-            * this.setSkill({
+
+            setSkill({
                 from : id,
                 type : 'hp',
                 value : value ,
                 st : type,
-            })*/
-            // lưu ý
+            })
+
         });
 
 
@@ -443,13 +444,11 @@ export class webSocket extends Component {
                 }
                 getMy.info.coban.exp = exp_info;
                 if(exp_cong !=0) {
-                    /*
-                    * this.setSkill({
-                        from : id,
+
+                    setSkill({from : id,
                         type : 'congexp',
-                        value : exp_cong,
-                    })*/
-                    // lưu ý
+                        value : exp_cong,})
+
                 }
             }
         });
@@ -473,12 +472,14 @@ export class webSocket extends Component {
                 let my = getMy.getComponent(SpriteController).my;
                 my.info.chiso.mp = newhp;
             }
-            /*this.setSkill({
+
+            setSkill({
                 from : id,
                 who : 2,
                 type : 'conghp',
                 value : value,
-            })*/
+            })
+
         })
 
     }

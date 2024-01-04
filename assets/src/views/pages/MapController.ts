@@ -37,10 +37,22 @@ export let getSprite = (id: any) => {
     return null;
 }
 
+export function getSpriteComponent(id : any) {
+    if(typeof id === "object") {
+        return id.getComponent(SpriteController);
+    }
+    let node = getSprite(id);
+    if(node) {
+        return node.getComponent(SpriteController);
+    }
+    return null;
+}
+
 export function createSprite(my : any) {
     if(typeof my.id === 'number') {
         my.id = my.id.toString();
     }
+    let parent = find("game/player");
     let uid = find("game/player/"+my.id);
     if(uid) {
         let sprite = uid.getComponent(SpriteController);
@@ -49,12 +61,42 @@ export function createSprite(my : any) {
     else {
         let demo = find("game/demo/0");
         let clone = instantiate(demo);
-        clone.parent = find("game/player");
         clone.name = my.id;
         clone.active = true;
         clone.setPosition(my.pos.x, my.pos.y);
         clone.getComponent(SpriteController).createSprite(my);
+
+        parent.insertChild(clone, 0);
+
+
     }
+
+    let sort = find("game/player");
+    let playerID = cache.my.id;
+    sort.children.sort((a,b) => {
+        let AMy = a.getComponent(SpriteController).my;
+        let BMy = b.getComponent(SpriteController).my;
+        const typeOrder = {
+            'zone' : 1,
+            'npc' : 2,
+            'mob' : 3,
+            'player' : 4,
+        };
+        let aType = typeOrder[AMy.type];
+        let bType = typeOrder[BMy.type];
+        if(aType !== bType) {
+            return aType - bType;
+        }
+        else if(AMy.type === 'player' && BMy.type === 'player') {
+            if(AMy.id === playerID) {
+                return 1;
+            }
+            if(BMy.id === playerID) {
+                return -1;
+            }
+        }
+        return 0;
+    });
 }
 
 export function goto(id: any, zone : any = null, x: any = null, y: any = null) {

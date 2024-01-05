@@ -11,6 +11,7 @@ let cache :any = {
     game : {
         width : view.getFrameSize().width,
         height : view.getFrameSize().height,
+        screen : view.getFrameSize().width > view.getFrameSize().height ? view.getFrameSize().height : view.getFrameSize().width,
     },
     images : [],
     info: {
@@ -35,6 +36,10 @@ let cache :any = {
 }
 
 export default  cache
+
+export function getScreen(): any {
+    return view.getFrameSize();
+}
 
 export function getImages(name: string, action: string): any {
     let data: object = cache.images.find(e => e.name === name);

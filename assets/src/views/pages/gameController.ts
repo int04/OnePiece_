@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, systemEvent, BoxCollider2D, RigidBody2D, find, Intersection2D, Label, tween } from 'cc';
-import cache from "db://assets/src/engine/cache";
+import cache, {getScreen} from "db://assets/src/engine/cache";
 import {getSprite} from "./MapController";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 import {spriteController} from "db://assets/src/views/editor/spriteController";
@@ -273,12 +273,13 @@ export class gameController extends Component {
             let XY = find("UI/XY");
             if(XY) {
                 let label = XY.getComponent(Label);
-                label.string = 'X: '+this.nhanvat.getPosition().x.toFixed(2) + ' Y: '+this.nhanvat.getPosition().y.toFixed(2);
+                label.string = 'X: '+this.nhanvat.getPosition().x.toFixed(2) + ' Y: '+this.nhanvat.getPosition().y.toFixed(2)
+                + ' ('+getScreen().width+' - '+getScreen().height+') ';
             }
 
             this.MOVE(deltaTime);
             let target_postion = this.nhanvat.getPosition()
-            let minX = cache.map.x.min + cache.game.width/2;
+            let minX = cache.map.x.min + cache.game.width//2;
             let maxX = cache.map.x.max - cache.game.width/2;
             let minY = cache.map.y.min + cache.game.height/2;
             let maxY = cache.map.y.max - cache.game.height/2;

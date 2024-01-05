@@ -57,7 +57,7 @@ export class boxItemUI extends Component {
         this.data = data;
 
 
-        if(item.type === 'item') {
+        if(item.type === 'trangbi') {
             this.clickButton();
         }
 
@@ -88,7 +88,6 @@ export class boxItemUI extends Component {
         if(data.level >= 9) level = 4;
         let o_level : Array<any> = [0,"#9AC0CD","#54FF9F","#FF1493","#CD0000"];
         let o_level_run : Array<any> = [0,"#68838B","#2E8B57","#8B0A50","#8B0000"];
-        level = 2;
         if(level >=1) {
             let border = new Node("border");
             border.parent = this.avatar;

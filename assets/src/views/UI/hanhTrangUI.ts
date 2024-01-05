@@ -83,7 +83,7 @@ export class hanhTrangUI extends Component {
 
         let sprite = getSprite();
         let my = sprite.getComponent(SpriteController).my;
-        let box = my.ruong?.max;
+        let box = my.ruong?.max + 0
         let ruong = my.ruong.data.filter(e=> e.active === "hanhtrang");
         console.log(ruong)
 
@@ -95,6 +95,7 @@ export class hanhTrangUI extends Component {
             list.addChild(item);
             if(ruong[i])
             {
+                ruong[i].source = "bag";
                 let child = find("item",item);
                 child.getComponent(boxItemUI).updateItem(ruong[i]);
             }

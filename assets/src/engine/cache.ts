@@ -37,6 +37,27 @@ let cache :any = {
     item : [],
 }
 
+export function _(content : string) : string {
+    return content;
+}
+
+export function getThuocTinh(name : string) : any {
+    let thuoctinh = cache.thuoctinh;
+    if(thuoctinh[name]) {
+        return {
+            name : thuoctinh[name][0],
+            value : thuoctinh[name][1]
+        }
+    }
+    else
+    {
+        return {
+            name : name,
+            value : ''
+        }
+    }
+}
+
 export default  cache
 
 export function getScreen(): any {

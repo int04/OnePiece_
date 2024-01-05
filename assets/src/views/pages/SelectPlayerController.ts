@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, find, instantiate, NodeEventType } from 'cc';
-import {bottom, deleteNotice, notice} from "db://assets/src/engine/UI";
+import {bottom, deleteNotice, notice, testUI} from "db://assets/src/engine/UI";
 import {coverImg} from "db://assets/src/engine/draw";
 import {getListImagesSrc} from "db://assets/src/engine/cache";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
@@ -88,6 +88,7 @@ export class SelectPlayerController extends Component {
                 if(i ===1) {
                     setTimeout(() => {
                         this.InterGame(data[i].id);
+                        testUI();
                     },200);
                 }
                 taomoi.active = false;

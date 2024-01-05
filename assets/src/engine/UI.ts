@@ -1,4 +1,12 @@
 import { _decorator, native, UITransform, UIOpacity, assetManager, find, Node} from 'cc';
+import {BoxUI} from "db://assets/src/views/UI/BoxUI";
+
+export function testUI():void {
+    setTimeout(() => {
+       let bag = find("UI/box");
+       bag.getComponent(BoxUI).openBag();
+    },300);
+}
 
 export function bottom(e : Node): void {
     let post = e.worldPosition;

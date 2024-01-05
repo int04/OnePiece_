@@ -17,8 +17,12 @@ let getImgLocal = async (name : string, path : string = 'icon') => {
     })
 }
 
-let coverImg = async (url: string, path = null) => {
-    if(typeof url != 'string') url = url.toString();
+let coverImg = async (url: string = '', path = null) : Promise<Texture2D> => {
+    if(!url) return null;
+    if(typeof url != 'string') {
+        // @ts-ignore
+        url = url.toString();
+    }
     return new Promise((res,fai) => {
         let fullurl = cache.path + url+'.png';
         if(path) {
@@ -30,9 +34,10 @@ let coverImg = async (url: string, path = null) => {
         if(isExist) {
             return res(isExist)
         }
-        assetManager.loadRemote(fullurl, (err, images) => {
+        assetManager.loadRemote(fullurl, (err, images) : void  => {
             // cover to texture
-            let texture = new Texture2D();
+            let texture: Texture2D = new Texture2D();
+            // @ts-ignore
             texture.image = images;
             assetManager.assets.add(name, texture);
             res(texture);
@@ -40,7 +45,7 @@ let coverImg = async (url: string, path = null) => {
     })
 }
 
-export let coverSpriteFrame = async (url: string, path = null) => {
+export let coverSpriteFrame = async (url: string, path = null): Promise<SpriteFrame> => {
     return new Promise( async (res, fai) => {
         let texture = await coverImg(url, path);
 

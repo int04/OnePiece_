@@ -1,4 +1,7 @@
 import { _decorator, Component, Node, find, Label, ScrollView, Layout, instantiate } from 'cc';
+import {getSprite} from "db://assets/src/views/pages/MapController";
+import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
+import {boxItemUI} from "db://assets/src/views/UI/boxItemUI";
 const { ccclass, property } = _decorator;
 
 @ccclass('hanhTrangUI')
@@ -71,12 +74,31 @@ export class hanhTrangUI extends Component {
         let demo = find("demo", list);
         if(demo) demo.active = false;
 
-        let box = 500;
+        // reset bag
+        let children = list.children;
+        for(let child of children) {
+            if(child.name === "demo") continue;
+            child.destroy();
+        }
+
+        let sprite = getSprite();
+        let my = sprite.getComponent(SpriteController).my;
+        let box = my.ruong?.max;
+        let ruong = my.ruong.data.filter(e=> e.active === "hanhtrang");
+        console.log(ruong)
+
+
         for(let i = 0; i < box; i++) {
             let item = instantiate(demo);
             item.active = true;
             item.name = "item" + i;
             list.addChild(item);
+            if(ruong[i])
+            {
+                let child = find("item",item);
+                child.getComponent(boxItemUI).updateItem(ruong[i]);
+            }
+
         }
         layout.updateLayout();
 
@@ -84,6 +106,7 @@ export class hanhTrangUI extends Component {
         let size = layout.node.getContentSize();
         // @ts-ignore
         content.setContentSize(size);
+
 
 
     }

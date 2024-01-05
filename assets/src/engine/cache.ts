@@ -33,6 +33,8 @@ let cache :any = {
         y : {min : 0, max : 0},
     },
     click : null,
+    thuoctinh : {},
+    item : [],
 }
 
 export default  cache

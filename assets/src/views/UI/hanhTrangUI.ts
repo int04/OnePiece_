@@ -34,8 +34,18 @@ export class hanhTrangUI extends Component {
         }
     }
     changeTab(event: any, customEventData: any): void {
-        let node = event.target;
-        let name = node.name;
+        let node;
+        let name;
+
+        if(event) {
+            node = event.target;
+            name = node.name;
+        }
+
+        if(typeof  customEventData === "string" && customEventData.length >=1) {
+            name = customEventData;
+        }
+
         let tab = find("tab", this.node);
         if(!tab) return;
         if(this.old.length >=1) {
@@ -202,8 +212,7 @@ export class hanhTrangUI extends Component {
         }
         this.node.active = true;
         if(name) {
-            this.setTitle(this.stringCover[name]);
-            this[name]();
+            this.changeTab(null, name);
         }
         else {
             this.setTitle(this.stringCover['bag']);

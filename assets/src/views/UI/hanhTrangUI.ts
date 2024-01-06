@@ -1,7 +1,8 @@
-import { _decorator, Component, Node, find, Label, ScrollView, Layout, instantiate } from 'cc';
-import {getSprite} from "db://assets/src/views/pages/MapController";
+import { _decorator, Component, Node, find, Label, ScrollView, Layout, instantiate, UITransform } from 'cc';
+import {getSprite, getSpriteComponent} from "db://assets/src/views/pages/MapController";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 import {boxItemUI} from "db://assets/src/views/UI/boxItemUI";
+import {_, getThuocTinh} from "db://assets/src/engine/cache";
 const { ccclass, property } = _decorator;
 
 @ccclass('hanhTrangUI')
@@ -27,7 +28,7 @@ export class hanhTrangUI extends Component {
     }
 
     public hide():void {
-        let array: Array<string> = ["bag", "use"];
+        let array: Array<string> = ["bag", "use", "info"];
         for(let name of array) {
             let node = find(name, this.node);
             if(node) node.active = false;
@@ -203,6 +204,73 @@ export class hanhTrangUI extends Component {
     }
 
     info():void {
+
+        this.hide();
+        let node = find("info", this.node);
+        if(!node) return;
+        if(node) node.active = true;
+
+        let srcView = find("ScrollView",node);
+        let content = srcView.getComponent(ScrollView).content;
+
+        let layout = find("list",content);
+
+        for(let child of layout.children) {
+            if(child.name === 'demo') continue;
+            child.destroy();
+        }
+
+
+        let demo = find("demo",layout);
+
+
+        let chiso : Array<string> = [
+            'haki',
+            '_haki',
+            'hpmax',
+            'mpmax',
+            'sat_thuong_vat_ly',
+            'sat_thuong_phep',
+            'khang_vat_ly',
+            'khang_phep',
+            '_hpmax',
+            '_mpmax',
+            '_chi_mang',
+            '_sat_thuong_chi_mang',
+            '_giam_sat_thuong_chi_mang',
+            '_hoi_mau',
+            '_hoi_mp',
+            '_sat_thuong_vat_ly',
+            '_sat_thuong_phep',
+            '_khang_vat_ly',
+            '_khang_phep',
+            'hoi_chieu'
+        ];
+
+        let sprite = getSprite();
+        if(!sprite) return;
+        let my = getSpriteComponent(sprite).my;
+        for(let tenthuoctinh of chiso) {
+            let tinh : number = my.info.chiso[tenthuoctinh] || 0;
+            let goithuoctinh: any = getThuocTinh(tenthuoctinh);
+            let text : string = ''+goithuoctinh.name+': '+tinh+''+goithuoctinh.value+'  ';
+            if(tenthuoctinh.indexOf('_') == 0) {
+                text = (tinh >= 0 ?_("Tăng") : _('Giảm')) + " "  +text;
+            }
+            let clone = instantiate(demo);
+            clone.active = true;
+            clone.name = tenthuoctinh;
+            clone.getComponent(Label).string = text;
+            layout.addChild(clone);
+        }
+
+
+        let layoutComponent = layout.getComponent(Layout);
+        layoutComponent.updateLayout();
+
+        let size = layoutComponent.node.getComponent(UITransform).contentSize;
+
+        content.getComponent(UITransform).contentSize = size;
 
     }
 

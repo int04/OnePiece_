@@ -35,6 +35,7 @@ let cache :any = {
     click : null,
     thuoctinh : {},
     item : [],
+    skill : [],
 }
 
 export function _(content : string) : string {

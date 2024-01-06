@@ -27,7 +27,7 @@ export class hanhTrangUI extends Component {
     }
 
     public hide():void {
-        let array: Array<string> = ["bag"];
+        let array: Array<string> = ["bag", "use"];
         for(let name of array) {
             let node = find(name, this.node);
             if(node) node.active = false;
@@ -62,6 +62,7 @@ export class hanhTrangUI extends Component {
     }
 
     bag():void {
+        this.hide();
         let node = find("bag", this.node);
         if(!node) return;
         if(node) node.active = true;
@@ -135,10 +136,16 @@ export class hanhTrangUI extends Component {
         
     }
 
-    run():void {
+    run(name = null):void {
         this.node.active = true;
-        this.setTitle(this.stringCover['bag']);
-        this.bag();
+        if(name) {
+            this.setTitle(this.stringCover[name]);
+            this[name]();
+        }
+        else {
+            this.setTitle(this.stringCover['bag']);
+            this.bag();
+        }
     }
 }
 

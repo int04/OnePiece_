@@ -29,12 +29,12 @@ export class BoxUI extends Component {
         this.node.active = false;
     }
 
-    public openBag(): void {
+    public openBag(name = null): void {
         let body = find("body", this.node);
         this.node.active = true;
         let hanhtrang = find("hanhtrang", body);
         if(hanhtrang) {
-            hanhtrang.getComponent(hanhTrangUI).run();
+            hanhtrang.getComponent(hanhTrangUI).run(name);
         }
     }
 

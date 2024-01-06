@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, find, instantiate, NodeEventType } from 'cc';
+import { _decorator, Component, Node, find, instantiate, NodeEventType, UITransform } from 'cc';
 import {bottom, deleteNotice, notice, testUI} from "db://assets/src/engine/UI";
 import {coverImg} from "db://assets/src/engine/draw";
 import {getListImagesSrc} from "db://assets/src/engine/cache";
@@ -40,7 +40,6 @@ export class SelectPlayerController extends Component {
     }
 
     public async loadAssets(data : any): Promise<void> {
-        console.log('load nè')
         let list = [];
         let players: any = data.players;
         players.forEach(e => {
@@ -72,7 +71,7 @@ export class SelectPlayerController extends Component {
         this.insertPlayer(data.players)
     }
 
-    public async insertPlayer(data): void {
+    public async insertPlayer(data): Promise<void> {
         for(let i = 0; i < 3; i++) {
             let list: Node = find("list/"+i, this.node);
             let caibong: Node = find("caibong", list);
@@ -100,11 +99,11 @@ export class SelectPlayerController extends Component {
                 let postionNhanVat = player.getPosition();
                 let quan = await sprite.getSizeObject('quan');
                 postionNhanVat.x = positison.x;
-                postionNhanVat.y = positison.y + caibong.getContentSize().height/2 + quan.height/2 -15;
+                postionNhanVat.y = positison.y + caibong.getComponent(UITransform).contentSize.height/2 + quan.height/2 -15;
                 player.setPosition(postionNhanVat);
                 player.active = true;
                 let getALlSize = await sprite.caculatorSize();
-                player.setContentSize(getALlSize.width, getALlSize.height);
+                player.getComponent(UITransform).setContentSize(getALlSize.width, getALlSize.height);
 
                 sprite.updateClick(() => {
                     this.InterGame(dataPlayer.id);

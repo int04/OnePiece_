@@ -85,7 +85,6 @@ export class hanhTrangUI extends Component {
         let my = sprite.getComponent(SpriteController).my;
         let box = my.ruong?.max + 0
         let ruong = my.ruong.data.filter(e=> e.active === "hanhtrang");
-        console.log(ruong)
 
 
         for(let i = 0; i < box; i++) {

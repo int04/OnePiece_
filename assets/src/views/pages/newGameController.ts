@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, find, NodeEventType, instantiate, EditBox } from 'cc';
+import { _decorator, Component, Node, find, NodeEventType, instantiate, EditBox, UITransform } from 'cc';
 import cache, {getListImagesSrc} from "db://assets/src/engine/cache";
 import {coverImg} from "db://assets/src/engine/draw";
 import {bottom, deleteNotice, notice} from "db://assets/src/engine/UI";
@@ -144,7 +144,7 @@ export class newGameController extends Component {
             let postionNhanVat = showPre.getPosition();
             let quan = await sprite.getSizeObject('quan');
             postionNhanVat.x = positison.x;
-            postionNhanVat.y = positison.y + caibong.getContentSize().height/2 + quan.height/2 -15;
+            postionNhanVat.y = positison.y + caibong.getComponent(UITransform).contentSize.height/2 + quan.height/2 -15;
             showPre.setPosition(postionNhanVat);
             sprite.updateChat(text[nhanVat-1]);
         },100);

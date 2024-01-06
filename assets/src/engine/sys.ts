@@ -60,7 +60,7 @@ export function move(WHO: any, NEXT:any, time: number, easingSet: any = 'bounceO
         .to(time,
             NEXT,
             {
-                easing: 'bounceOut',
+                easing: easingSet,
                 onUpdate : () => {
                     if(onUpdate) {
                         onUpdate();
@@ -83,7 +83,7 @@ export function moveFinished(WHO: any, NEXT:any, time: number, easingSet: any = 
             .to(time,
                 NEXT,
                 {
-                    easing: 'bounceOut',
+                    easing: easingSet,
                     onUpdate : () => {
                         if(onUpdate) {
                             onUpdate();

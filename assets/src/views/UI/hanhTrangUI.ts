@@ -86,6 +86,9 @@ export class hanhTrangUI extends Component {
         let box = my.ruong?.max + 0
         let ruong = my.ruong.data.filter(e=> e.active === "hanhtrang");
 
+        ruong.sort((a,b) => {
+            return a.time - b.time;
+        });
 
         for(let i = 0; i < box; i++) {
             let item = instantiate(demo);

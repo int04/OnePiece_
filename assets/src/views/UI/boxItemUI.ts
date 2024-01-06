@@ -60,11 +60,6 @@ export class boxItemUI extends Component {
         }
         this.data = data;
 
-
-        if(item.type === 'trangbi') {
-            this.clickButton();
-        }
-
         this.node.active = true;
 
         let phamchat = 1;

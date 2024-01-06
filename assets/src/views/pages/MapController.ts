@@ -26,7 +26,7 @@ export function reset() {
     });
 }
 
-export let getSprite = (id: any = null) => {
+export function getSprite (id: any = null): Node {
     if(id === null) {
         id = cache.my.id;
     }

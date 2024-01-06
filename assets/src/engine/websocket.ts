@@ -10,6 +10,7 @@ import {SelectPlayerController} from "db://assets/src/views/pages/SelectPlayerCo
 import {createSprite, getSprite, goto, listPlayer, loadMap, resetAll, updatePos} from "../views/pages/MapController";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 import {setSkill} from "db://assets/src/views/pages/skills/skillController";
+import {hanhTrangUI} from "db://assets/src/views/UI/hanhTrangUI";
 @ccclass('webSocket')
 export class webSocket extends Component {
     private ws: Socket = null;
@@ -463,6 +464,69 @@ export class webSocket extends Component {
             })
 
         })
+
+
+        this.ws.on('used', data => {
+            deleteNotice();
+            switch (data) {
+                case '1':
+                    notice('Bạn không thể sử dụng vật phẩm khi đang kiệt sức.');
+                    break;
+                case '2':
+                    notice('Bạn đã hết vật phẩm này rồi.');
+                    break;
+                case '3':
+                    notice('Có lỗi xảy ra #3.');
+                    break;
+                case '4':
+                    notice('Bạn chưa đủ cấp độ để sử dụng vật phẩm này.');
+                    break;
+                case '5':
+                    notice('Nhân vật của bạn không thể sử dụng vật phẩm này được.');
+                    break;
+                case '6':
+                    notice('Bạn đã hết vật phẩm này rồi.');
+                    break;
+                case '7':
+                    notice('Có lỗi xảy ra');
+                    break;
+                case '8':
+                   // notice('');
+                    break;
+                default:
+                    notice('Có lỗi xảy ra: mã lỗi:'+data);
+                    break;
+            }
+
+        })
+
+        this.ws.on('used_updated', data => {
+            /*
+            * my.id,
+            my.trangbi,
+            my.info,
+            my.skin,
+            my.ruong*/
+            let id = data[0];
+            let trangbi = data[1];
+            let info = data[2];
+            let skin = data[3];
+            let ruong = data[4];
+            let getMy = getSprite(id);
+            if(getMy) {
+                let my = getMy.getComponent(SpriteController).my;
+                my.trangbi = trangbi;
+                my.info = info;
+                my.skin = skin;
+                my.ruong = ruong;
+                if(id == cache.my.id) {
+                    let bag = find("UI/box/body/hanhtrang");
+                    if(bag) {
+                        bag.getComponent(hanhTrangUI).bag();
+                    }
+                }
+            }
+        });
 
     }
 

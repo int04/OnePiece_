@@ -220,8 +220,8 @@ export class preViewItemUI extends Component {
         }
         let source = this.source;
 
-        let list = source[this.data.source];
-        if(!list) return;
+        let list = source[this.data.source] || [];
+        list.push(["dong","Đóng"])
 
         for(let i = 0; i < list.length; i++) {
             let item = list[i];

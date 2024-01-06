@@ -121,6 +121,50 @@ export class hanhTrangUI extends Component {
 
     use():void {
 
+        this.hide();
+        let node = find("use", this.node);
+        if(!node) return;
+        if(node) node.active = true;
+
+        let top = find("Top",node);
+        let tab1 = find("tab1",top);
+        console.log(tab1)
+
+        let sprite = getSprite();
+        let my = sprite.getComponent(SpriteController).my;
+        let trangbi = my.trangbi;
+        let ruong = my.ruong.data.filter(e=> e.active === "trangbi");
+
+        let xuly = (child : Node) => {
+            let name = child.name;
+            let id = trangbi[name];
+            let demo = find("demo", child);
+            let item = find("item", child);
+            if(id) {
+                demo.active = false;
+                let infoItem = ruong.find(e => e.id === id);
+                if(infoItem) {
+                    item.getComponent(boxItemUI).updateItem(infoItem);
+                    item.active = true;
+
+                }
+            }
+            else {
+                demo.active = true;
+                item.active = false;
+            }
+        }
+
+        for(let child  of tab1.children) {
+            xuly(child);
+        }
+
+        let tab2 = find("tab2",top);
+        for(let child  of tab2.children) {
+            let name = child.name;
+            xuly(child);
+        }
+
     }
 
     question():void {

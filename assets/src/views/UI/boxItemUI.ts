@@ -29,7 +29,7 @@ export class boxItemUI extends Component {
     public clickButton(event = null): void {
         let UI = find("UI/previewItem");
         if(UI) {
-            UI.getComponent(preViewItemUI).updatePrview(this.data);
+            UI.getComponent(preViewItemUI).updatePrview(this.data, event);
         }
     }
 

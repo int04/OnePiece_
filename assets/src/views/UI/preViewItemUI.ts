@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, ScrollView, Label, Layout, instantiate, find, UITransform, Button, Sprite, Animation } from 'cc';
+import { _decorator, Component, Node, ScrollView, Label, Layout, instantiate, find, UITransform, Button, Sprite, Animation, EventTouch } from 'cc';
 import cache, {_, getThuocTinh} from "db://assets/src/engine/cache";
 import {coverColor, coverImg, coverSpriteFrame} from "db://assets/src/engine/draw";
 import {buttonItemUI} from "db://assets/src/views/UI/buttonItemUI";
@@ -246,7 +246,7 @@ export class preViewItemUI extends Component {
         content.setContentSize(size.width + 0, size.height);
     }
 
-    updatePrview(data : any) : void {
+    updatePrview(data : any, event : EventTouch) : void {
         this.data = data;
         let item = cache.item.find( e=> e.id === data.item);
         if(!item) {
@@ -266,6 +266,28 @@ export class preViewItemUI extends Component {
         this.xulydakham();
         this.xulyContent();
         this.xulyButton();
+        this.clickButton(event);
+    }
+
+    clickButton(event : EventTouch) : void {
+        /*
+        * Thay đổi UI theo con trỏ chuột
+        * */
+        if(!event) return;
+        let touch = event.touch;
+        let point = touch.getUILocation();
+
+        let contentSize = this.node.getComponent(UITransform).contentSize;
+        let world = this.node.worldPosition;
+        let clone = world.clone();
+        clone.x = point.x + contentSize.width/2;
+        this.node.setWorldPosition(clone);
+
+        let width = cache.game.width;
+        if(clone.x + contentSize.width/2 > width) {
+            clone.x = width - contentSize.width/2;
+        }
+
     }
 
     update(deltaTime: number) {

@@ -10,6 +10,10 @@ export class buttonItemUI extends Component {
     * @todo ! để thêm các hàm xử lý khác, vui lòng vào preViewItemUI.ts để thêm vào hàm source;
     * */
 
+    public trangbi():void {
+
+    }
+
     playButton(event : any, name : string):void {
         let show = find("UI/previewItem");
         if(show) show.active = false;

@@ -1,7 +1,8 @@
-import { _decorator, Component, Node, ScrollView, Label, Layout, instantiate, find, UITransform, Button } from 'cc';
+import { _decorator, Component, Node, ScrollView, Label, Layout, instantiate, find, UITransform, Button, Sprite, Animation } from 'cc';
 import cache, {_, getThuocTinh} from "db://assets/src/engine/cache";
-import {coverColor} from "db://assets/src/engine/draw";
+import {coverColor, coverImg, coverSpriteFrame} from "db://assets/src/engine/draw";
 import {buttonItemUI} from "db://assets/src/views/UI/buttonItemUI";
+import {createClipY} from "db://assets/src/engine/animation";
 const { ccclass, property } = _decorator;
 
 @ccclass('preViewItemUI')
@@ -29,12 +30,48 @@ export class preViewItemUI extends Component {
         this.node.active = false;
     }
 
-    xulydakham():void {
+    async xulydakham():Promise<void> {
         if(this.item.type === 'item') {
             this.dakhamUI.active = false
             return;
         }
         this.dakhamUI.active = true;
+
+        let lo = this.data.lo;
+        if(typeof lo !== 'object') return;
+        let child = this.dakhamUI.children;
+        for(let i = 0; i < child.length; i++) {
+            let element = child[i];
+            let da = find("da", element);
+            if(lo[i] === -1) {
+                element.active = false;
+            }
+            else if(lo[i] === 0) {
+                element.active = true;
+                da.active = false;
+            }
+            else {
+                let item = cache.item.find(e => e.id === lo[i]);
+                if(!item) continue;
+                da.active = true;
+                let img = item.img;
+                let num = img.num; // số lượng sheet
+                let src = img.src; // ảnh
+                if(num <=1) {
+                    da.getComponent(Sprite).spriteFrame = await coverSpriteFrame(src);
+                }
+                else {
+                    let texture = await coverImg(src);
+                    let width = texture.width;
+                    let height = texture.height;
+                    let clip = await createClipY(src, width, height, num, 0.1, 120);
+                    da.addComponent(Animation);
+                    let animation = da.getComponent(Animation);
+                    animation.addClip(clip, clip.name);
+                    animation.play(clip.name);
+                }
+            }
+        }
 
     }
 

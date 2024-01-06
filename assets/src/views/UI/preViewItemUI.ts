@@ -220,7 +220,8 @@ export class preViewItemUI extends Component {
         }
         let source = this.source;
 
-        let list = source[this.data.source] || [];
+        let listx = source[this.data.source] || [];
+        let list = JSON.parse(JSON.stringify(listx));
         list.push(["dong","Đóng"])
 
         for(let i = 0; i < list.length; i++) {

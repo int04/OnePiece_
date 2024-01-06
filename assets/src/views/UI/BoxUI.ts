@@ -30,6 +30,9 @@ export class BoxUI extends Component {
     }
 
     public openBag(name = null): void {
+        if(!name) {
+            name = "bag";
+        }
         let body = find("body", this.node);
         this.node.active = true;
         let hanhtrang = find("hanhtrang", body);

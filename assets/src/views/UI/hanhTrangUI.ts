@@ -128,7 +128,6 @@ export class hanhTrangUI extends Component {
 
         let top = find("Top",node);
         let tab1 = find("tab1",top);
-        console.log(tab1)
 
         let sprite = getSprite();
         let my = sprite.getComponent(SpriteController).my;
@@ -165,6 +164,23 @@ export class hanhTrangUI extends Component {
             xuly(child);
         }
 
+        let content = find("content",top);
+        let demoSprite = find("demoSprite",content);
+        demoSprite.getComponent(SpriteController).updateSkinCreateNew(my.skin, 'dungyen','');
+
+        let down = find("down",node);
+        let list = find("background",down);
+        for(let name in my.info?.chiso) {
+            let value = my.info?.chiso[name];
+            let item = find(name, list);
+            if(item) {
+                let label = find("value", item);
+                if(label) {
+                    label.getComponent(Label).string = value;
+                }
+            }
+        }
+
     }
 
     question():void {
@@ -181,6 +197,9 @@ export class hanhTrangUI extends Component {
     }
 
     run(name = null):void {
+        if(typeof name === "object") {
+            name  = 'bag'
+        }
         this.node.active = true;
         if(name) {
             this.setTitle(this.stringCover[name]);

@@ -7,13 +7,8 @@ export class boxItemUseUI extends Component {
     background: Node = null;
     @property(Node)
     item: Node = null;
-    start() {
 
-    }
 
-    update(deltaTime: number) {
-        
-    }
 }
 
 

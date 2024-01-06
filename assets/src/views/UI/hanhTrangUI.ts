@@ -2,7 +2,8 @@ import { _decorator, Component, Node, find, Label, ScrollView, Layout, instantia
 import {getSprite, getSpriteComponent} from "db://assets/src/views/pages/MapController";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 import {boxItemUI} from "db://assets/src/views/UI/boxItemUI";
-import {_, getThuocTinh} from "db://assets/src/engine/cache";
+import cache, {_, getThuocTinh} from "db://assets/src/engine/cache";
+import {boxSkillUI} from "db://assets/src/views/UI/boxSkillUI";
 const { ccclass, property } = _decorator;
 
 @ccclass('hanhTrangUI')
@@ -28,7 +29,7 @@ export class hanhTrangUI extends Component {
     }
 
     public hide():void {
-        let array: Array<string> = ["bag", "use", "info"];
+        let array: Array<string> = ["bag", "use", "info", "skill"];
         for(let name of array) {
             let node = find(name, this.node);
             if(node) node.active = false;
@@ -132,7 +133,71 @@ export class hanhTrangUI extends Component {
     }
 
     skill():void {
+        this.hide();
+        let node = find("skill", this.node);
+        if(!node) return;
+        if(node) node.active = true;
 
+        let srcView = find("ScrollView",node);
+        let content = srcView.getComponent(ScrollView).content;
+
+        let layout = find("list",content);
+
+        for(let child of layout.children) {
+            if(child.name === 'demo_text' || child.name === 'demo_skill') continue;
+            child.destroy();
+        }
+
+        let sprite = getSprite();
+        if(!sprite) return;
+        let my = getSpriteComponent(sprite).my;
+
+
+        let demo_text = find("demo_text",layout);
+        let demo_skill = find("demo_skill",layout);
+
+        let list_skill = cache.skill;
+        let call : Object = {
+            tancong : "Kỹ năng tấn công:",
+            hotro : "Kỹ năng hỗ trợ:",
+            bidong : "Kỹ năng bị động:",
+        }
+        let insert =(type : string) => {
+            let getCall = call[type];
+            let clone_title = instantiate(demo_text);
+            clone_title.active = true;
+            clone_title.name = type;
+            clone_title.getComponent(Label).string = getCall;
+            layout.addChild(clone_title);
+
+            // insert icon
+
+            let list = list_skill.filter( (e : any) => e.type === type);
+            list.forEach((element : any) : void => {
+                let mySkill =  my.skill.find(e => e[0] && e[0] == element.id);
+                if(mySkill) {
+                    let clone = instantiate(demo_skill);
+                    clone.active = true;
+                    clone.name = "skill_"+element.id;
+                    clone.getComponent(boxSkillUI).updateSkill(mySkill, element);
+                    layout.addChild(clone);
+                }
+            })
+        }
+        insert('tancong'); // tạo kĩ năng tấn công
+        insert('hotro'); // tạo kĩ năng hỗ trợ
+        insert('bidong'); // tạo kĩ năng bị động
+
+
+        let layoutComponent = layout.getComponent(Layout);
+        layoutComponent.updateLayout();
+
+        let sizex = layoutComponent.node.getComponent(UITransform).contentSize;
+
+        let size = sizex.clone();
+      //  size.height += chiso.length * 5
+
+        content.getComponent(UITransform).contentSize = size;
     }
 
     use():void {
@@ -268,7 +333,10 @@ export class hanhTrangUI extends Component {
         let layoutComponent = layout.getComponent(Layout);
         layoutComponent.updateLayout();
 
-        let size = layoutComponent.node.getComponent(UITransform).contentSize;
+        let sizex = layoutComponent.node.getComponent(UITransform).contentSize;
+
+        let size = sizex.clone();
+        size.height += chiso.length * 5
 
         content.getComponent(UITransform).contentSize = size;
 

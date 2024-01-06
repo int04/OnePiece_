@@ -28,6 +28,10 @@ export class preViewItemUI extends Component {
 
     close():void {
         this.node.active = false;
+        let preSkill = find("UI/previewSkill");
+        if(preSkill) {
+            preSkill.active = false;
+        }
     }
 
     async xulydakham():Promise<void> {

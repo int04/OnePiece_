@@ -52,10 +52,11 @@ export class webSocket extends Component {
         this.ws.on('_', (data: any) => {
             console.log(data);
             cache.server.exp.level = data?.exp?.levelPlayer;
-            cache.server.exp.skill = data?.exp?.skillPlayer;
+            cache.server.exp.skill = data?.exp?.levelSkill;
             cache.server.map = data?.map; // # list map
             cache.item = data?.item; // # list item
             cache.thuoctinh = data?.thuoctinh; // # list thuộc tính
+            cache.skill = data?.skill;
         });
         this.ws.on('connect', (data: any) => {
             this.connected = true;

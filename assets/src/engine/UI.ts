@@ -4,7 +4,7 @@ import {BoxUI} from "db://assets/src/views/UI/BoxUI";
 export function testUI():void {
     setTimeout(() => {
        let bag = find("UI/box");
-       bag.getComponent(BoxUI).openBag('info');
+       bag.getComponent(BoxUI).openBag('skill');
     },300);
 }
 

@@ -77,7 +77,7 @@ export class loadController extends Component {
         }
     }
 
-    updateFile = (string: String) => {
+    updateFile = (string: string) => {
         this.file.getComponent(Label).string = string;
     }
 

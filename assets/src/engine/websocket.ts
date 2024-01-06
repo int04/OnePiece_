@@ -192,26 +192,6 @@ export class webSocket extends Component {
         });
 
 
-        this.ws.on('map', (data: object) => {
-            let status = data[0];
-            if(status === true) {
-                let pos = data[1];
-                updatePos(pos[0],pos[1],pos[2],pos[3]);
-                let idmap = pos[0];
-                let map = cache.server.map.find(e => e.id === idmap);
-                if(map) {
-                    let namesheet = map.map;
-                    loadMap(namesheet);
-                    let data2 = data[2];
-                    if(data2) {
-                        listPlayer(data2);
-                    }
-                }
-                else {
-                    notice('Vui lòng thoát game và vào lại...');
-                }
-            }
-        });
 
         // Hàm xử lý Map
 

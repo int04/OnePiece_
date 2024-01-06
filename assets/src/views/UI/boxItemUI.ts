@@ -5,7 +5,11 @@ import {createClipY} from "db://assets/src/engine/animation";
 import {grahics} from "db://assets/src/engine/canvas";
 import {preViewItemUI} from "db://assets/src/views/UI/preViewItemUI";
 const { ccclass, property } = _decorator;
-
+/*
+* @int04
+* @class boxItemUI
+* @what: hiển thị ra item UI
+* */
 @ccclass('boxItemUI')
 export class boxItemUI extends Component {
     @property(Sprite)
@@ -202,9 +206,7 @@ export class boxItemUI extends Component {
         this.background.color = color;
     }
 
-    update(deltaTime: number) {
-        
-    }
+
 }
 
 

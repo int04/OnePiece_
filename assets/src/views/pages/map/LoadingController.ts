@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, find, Label, ProgressBar, assetManager, TiledMap, Texture2D, SpriteFrame, Sprite, instantiate, UITransform, BoxCollider2D, RigidBody2D, ERigidBody2DType } from 'cc';
+import { ImageAsset, _decorator, Component, Node, find, Label, ProgressBar, assetManager, TiledMap, Texture2D, SpriteFrame, Sprite, instantiate, UITransform, BoxCollider2D, RigidBody2D, ERigidBody2DType } from 'cc';
 import {delay, random} from "db://assets/src/engine/sys";
 import cache from "db://assets/src/engine/cache";
 import {getTile} from "db://assets/src/views/pages/map/getTile";
@@ -43,15 +43,15 @@ export class LoadingController extends Component {
         return new Promise((res,fai) => {
             let fullurl = cache.path + url+'';
             // check is exist
-            let isExist = assetManager.assets.get(fullurl) as Texture2D;
+            let isExist = assetManager.assets.get(fullurl);
             if(isExist) {
                 if(callback) callback();
                 return res(isExist)
             }
-            assetManager.loadRemote(fullurl, (err, images) => {
+            assetManager.loadRemote(fullurl, (err, images :  ImageAsset) => {
                 let texture = new Texture2D();
-                // @ts-ignore
                 texture.image = images;
+                texture.name = fullurl;
                 assetManager.assets.add(fullurl, texture);
                 if(callback) callback();
                 res(texture);
@@ -66,6 +66,7 @@ export class LoadingController extends Component {
         let add = (ob : any ) => {
             let url = ob.url;
             if(list.indexOf(url) === -1) {
+
                 list.push(url);
                 promise.push(this.CallPromise(url, () => {
                     t++;

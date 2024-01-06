@@ -69,6 +69,11 @@ export class hanhTrangUI extends Component {
         this.hide();
         this[name]();
 
+        let preview = find("UI/previewItem");
+        if(preview) {
+            preview.active = false;
+        }
+
     }
 
     bag():void {

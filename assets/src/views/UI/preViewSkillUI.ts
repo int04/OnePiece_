@@ -148,8 +148,8 @@ export class preViewSkillUI extends Component {
 
         let list : Array<any> = [["int04","đóng"]];
         if(this.skill.type != 'bidong') {
-            for(let i = 0; i < 12; i++) {
-                list.push([i, "Gán phím"+(i+1)]);
+            for(let i = 0; i < 1; i++) {
+                list.push(['gan', "Gán phím"]);
             }
         }
         let demo = find("demo", layout.node);

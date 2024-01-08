@@ -9,9 +9,16 @@ let cache :any = {
     home : 'http://192.168.1.139:5555/res/',
     key : {},
     game : {
-        width : view.getFrameSize().width,
-        height : view.getFrameSize().height,
-        screen : view.getFrameSize().width > view.getFrameSize().height ? view.getFrameSize().height : view.getFrameSize().width,
+        width : view.getDesignResolutionSize().width,
+        height : view.getDesignResolutionSize().height,
+        screen : {
+            width : view.getFrameSize().width,
+            height : view.getFrameSize().height,
+        },
+        design : {
+            width : view.getDesignResolutionSize().width,
+            height : view.getDesignResolutionSize().height,
+        }
     },
     images : [],
     info: {
@@ -37,6 +44,7 @@ let cache :any = {
     item : [],
     skill : [],
 }
+
 
 export function _(content : string) : string {
     return content;

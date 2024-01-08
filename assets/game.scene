@@ -48169,7 +48169,7 @@
     "_paddingRight": 0,
     "_paddingTop": 0,
     "_paddingBottom": 0,
-    "_spacingX": 5,
+    "_spacingX": 7,
     "_spacingY": 5,
     "_verticalDirection": 1,
     "_horizontalDirection": 0,
@@ -64989,6 +64989,9 @@
     "title": {
       "__id__": 1271
     },
+    "Tab": {
+      "__id__": 1276
+    },
     "_id": "2dsmtd/5FNs543Ges3TQJ0"
   },
   {
@@ -65246,6 +65249,12 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "body": {
+      "__id__": 1218
+    },
+    "top": {
+      "__id__": 1187
+    },
     "_id": "6c1z+O9YdDMqeiiUhJo0Fw"
   },
   {

@@ -56,6 +56,9 @@ export  {
 }
 
 export function move(WHO: any, NEXT:any, time: number, easingSet: any = 'bounceOut', onComplete: Function = null, onUpdate: Function = null):any {
+    if(easingSet === null) {
+        easingSet = 'bounceOut';
+    }
     return tween(WHO)
         .to(time,
             NEXT,
@@ -78,6 +81,9 @@ export function move(WHO: any, NEXT:any, time: number, easingSet: any = 'bounceO
 }
 
 export function moveFinished(WHO: any, NEXT:any, time: number, easingSet: any = 'bounceOut',onUpdate: Function = null):any {
+    if(easingSet === null) {
+        easingSet = 'bounceOut';
+    }
     return new Promise((res : any, fai: any) => {
         tween(WHO)
             .to(time,

@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, systemEvent, BoxCollider2D, RigidBody2D, find, Intersection2D, Label, tween } from 'cc';
+import { _decorator, Component, Node, systemEvent, BoxCollider2D, RigidBody2D, find, Intersection2D, Label, tween, misc } from 'cc';
 import cache, {getScreen} from "db://assets/src/engine/cache";
 import {getSprite} from "./MapController";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
@@ -279,11 +279,12 @@ export class gameController extends Component {
 
             this.MOVE(deltaTime);
             let target_postion = this.nhanvat.getPosition()
-            let minX = cache.map.x.min + cache.game.width//2;
-            let maxX = cache.map.x.max - cache.game.width/2;
-            let minY = cache.map.y.min + cache.game.height/2;
-            let maxY = cache.map.y.max - cache.game.height/2;
+            let minX = cache.map.x.min + cache.game.design.width/2;
+            let maxX = cache.map.x.max - cache.game.design.width/2;
+            let minY = cache.map.y.min + cache.game.design.height/2;
+            let maxY = cache.map.y.max - cache.game.design.height/2;
 
+            /*
             if(target_postion.x < minX) {
                 target_postion.x = minX
             }
@@ -296,11 +297,16 @@ export class gameController extends Component {
             if(target_postion.y > maxY) {
                 target_postion.y = maxY
             }
+            *
+             */
+
+            target_postion.y = misc.clampf(target_postion.y, minY, maxY);
+            target_postion.x = misc.clampf(target_postion.x, minX, maxX);
 
 
             let current_position = this.camera.getPosition()
-            // @ts-ignore
-            current_position.lerp(target_postion, 0.04, current_position)
+            // @ts-ignore 0.04
+            current_position.lerp(target_postion, 0.1 , current_position)
             this.camera.setPosition(current_position)
         }
     }

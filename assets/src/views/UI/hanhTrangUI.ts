@@ -10,8 +10,9 @@ const { ccclass, property } = _decorator;
 export class hanhTrangUI extends Component {
     @property(Label)
     private title: Label = null;
+    @property(Node)
+    private Tab : Node = null;
     start() {
-        this.node.active =true;
     }
 
     private old : string = 'bag';
@@ -343,14 +344,31 @@ export class hanhTrangUI extends Component {
     }
 
 
-    update(deltaTime: number) {
-        
+    runAnimationTab(): void {
+        let tabs = this.Tab.children;
+        for(let tab of tabs) {
+            tab.active = false;
+        }
+        for(let i = 0; i < tabs.length; i++) {
+            let tab = tabs[i];
+            setTimeout(() => {
+                tab.active = true;
+            }, i * 200);
+        }
     }
 
+
     run(name = null):void {
+        
         if(typeof name === "object") {
             name  = 'bag'
         }
+
+        if(this.node.active === false) {
+            this.runAnimationTab();
+        }
+
+        
         this.node.active = true;
         if(name) {
             this.changeTab(null, name);

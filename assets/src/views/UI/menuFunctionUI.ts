@@ -1,4 +1,5 @@
 import { _decorator, Component, Node, Label, Sprite, find } from 'cc';
+import {coverSpriteFrame} from "db://assets/src/engine/draw";
 const { ccclass, property } = _decorator;
 
 @ccclass('menuFunctionUI')
@@ -24,8 +25,9 @@ export class menuFunctionUI extends Component {
         }
     }
 
-    private updateIcon(icon: any = null): void {
+    private async updateIcon(icon: any = null): Promise<void> {
         this.icon.node.active = true;
+        this.icon.spriteFrame = await coverSpriteFrame(icon);
     }
 
     public updateUI(icon: any = null, title: any, func: Function | string | (() => void) = null): void {

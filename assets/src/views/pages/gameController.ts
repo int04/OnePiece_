@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, systemEvent, BoxCollider2D, RigidBody2D, find, Intersection2D, Label, tween, misc } from 'cc';
+import { _decorator, Component, Node, systemEvent, BoxCollider2D, RigidBody2D, find, Intersection2D, Label, tween, misc, input, Input  } from 'cc';
 import cache, {getScreen} from "db://assets/src/engine/cache";
 import {getSprite} from "./MapController";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
@@ -14,9 +14,12 @@ export class gameController extends Component {
     start() {
         this.node.active = true;
         // @ts-ignore
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.KEY_DOWN, this);
+        //cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.KEY_DOWN, this);
         // @ts-ignore
-        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.KEY_UP, this);
+        //cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.KEY_UP, this);
+
+        input.on(Input.EventType.KEY_DOWN, this.KEY_DOWN, this);
+        input.on(Input.EventType.KEY_UP, this.KEY_UP, this);
     }
 
     KEY_DOWN(event): void {
@@ -277,12 +280,15 @@ export class gameController extends Component {
                 + ' ('+getScreen().width+' - '+getScreen().height+') ';
             }
 
+            let scale = this.camera.getScale();
+
             this.MOVE(deltaTime);
             let target_postion = this.nhanvat.getPosition()
-            let minX = cache.map.x.min + cache.game.design.width/2;
-            let maxX = cache.map.x.max - cache.game.design.width/2;
+            let minX = cache.map.x.min + cache.game.design.width/2
+            let maxX = cache.map.x.max - cache.game.design.width/2
             let minY = cache.map.y.min + cache.game.design.height/2;
             let maxY = cache.map.y.max - cache.game.design.height/2;
+
 
             /*
             if(target_postion.x < minX) {
@@ -306,7 +312,7 @@ export class gameController extends Component {
 
             let current_position = this.camera.getPosition()
             // @ts-ignore 0.04
-            current_position.lerp(target_postion, 0.1 , current_position)
+            current_position.lerp(target_postion, 3.2 * deltaTime , current_position)
             this.camera.setPosition(current_position)
         }
     }

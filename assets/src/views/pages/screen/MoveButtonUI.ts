@@ -15,9 +15,9 @@ export class MoveButtonUI extends Component {
 
     start() {
         this.node.active = true;
-        this.createEvent(this.up, 38);
-        this.createEvent(this.left, 37);
-        this.createEvent(this.right, 39);
+        //this.createEvent(this.up, 38);
+       // this.createEvent(this.left, 37);
+        //this.createEvent(this.right, 39);
     }
 
     createEvent(name: Node, key: number): void {

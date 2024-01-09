@@ -120,3 +120,15 @@ export function delay(time: number): any {
         }, time);
     })
 }
+
+export function animationText(text : string, x : number = 0) : string {
+    text = text.toString();
+    let textSet = '';
+    if(x >= text.length) {
+        x = text.length;
+    }
+    for(let i = 0; i < x; i++) {
+        textSet += text[i];
+    }
+    return textSet;
+}

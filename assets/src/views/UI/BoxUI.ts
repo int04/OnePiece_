@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, find, Vec3, tween } from 'cc';
+import { _decorator, Component, Node, find, Vec3, tween, EventHandler, input, Input } from 'cc';
 import {hanhTrangUI} from "db://assets/src/views/UI/hanhTrangUI";
 import cache from "db://assets/src/engine/cache";
 import {moveFinished} from "db://assets/src/engine/sys";
@@ -11,11 +11,29 @@ export class BoxUI extends Component {
     private body : Node = null;
     @property(Node)
     private top : Node = null;
+
+    @property(Node)
+    private buttonClose : Node = null;
+    @property(Node)
+    private title : Node = null;
     public async close(): Promise<void> {
+
+
+        let to0 : Vec3 = this.oldPostion_ButtonClose.clone();
+        to0.y = 0 - cache.game.height;
+
+        let to02 : Vec3 = this.oldPostion_Title.clone();
+        to02.x = 0 - cache.game.width;
+        await Promise.all([moveFinished(this.buttonClose,{
+            position : to0
+        }, 0.2, 'easeOutCirc'), moveFinished(this.title,{
+            position : to02
+        }, 0.2, 'easeOutCirc')]);
+
 
         let to : Vec3 = new Vec3(-cache.game.width, 0, 0);
         let to2 : Vec3 = new Vec3(cache.game.width+100, 0, 0);
-         moveFinished(this.top,{
+        moveFinished(this.top,{
             position : to2
         }, 0.5, 'easeOutCirc');
 
@@ -45,6 +63,8 @@ export class BoxUI extends Component {
 
     private oldPostion_Body : Vec3 = null;
     private oldPostion_Top : Vec3 = null;
+    private oldPostion_ButtonClose : Vec3 = null;
+    private oldPostion_Title : Vec3 = null;
 
     clone():void {
         if(this.oldPostion_Body === null) {
@@ -53,9 +73,17 @@ export class BoxUI extends Component {
         if(this.oldPostion_Top === null) {
             this.oldPostion_Top = this.top.position.clone();
         }
+        if(this.oldPostion_ButtonClose === null) {
+            this.oldPostion_ButtonClose = this.buttonClose.position.clone();
+        }
+        if(this.oldPostion_Title === null) {
+            this.oldPostion_Title = this.title.position.clone();
+        }
 
         this.body.setPosition(this.oldPostion_Body);
         this.top.setPosition(this.oldPostion_Top);
+        this.buttonClose.setPosition(this.oldPostion_ButtonClose);
+        this.title.setPosition(this.oldPostion_Title);
     }
 
     animation(): void {
@@ -84,6 +112,10 @@ export class BoxUI extends Component {
         if(!name) {
             name = "bag";
         }
+
+        input.once (Input.EventType.KEY_UP, (event) => {
+            console.log(event.keyCode);
+        }, this);
         
         if(this.node.active === false) {
             this.animation();

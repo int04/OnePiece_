@@ -1,9 +1,11 @@
-import { _decorator, Component, Node, find, Label, ScrollView, Layout, instantiate, UITransform } from 'cc';
+import { _decorator, Component, Node, find, Label, ScrollView, Layout, instantiate, UITransform, tween, UIOpacity, EventHandler } from 'cc';
 import {getSprite, getSpriteComponent} from "db://assets/src/views/pages/MapController";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 import {boxItemUI} from "db://assets/src/views/UI/boxItemUI";
 import cache, {_, getThuocTinh} from "db://assets/src/engine/cache";
 import {boxSkillUI} from "db://assets/src/views/UI/boxSkillUI";
+import {animationText, move} from "db://assets/src/engine/sys";
+import {CallBoxItemUI} from "db://assets/src/views/UI/CallBoxItemUI";
 const { ccclass, property } = _decorator;
 
 @ccclass('hanhTrangUI')
@@ -13,6 +15,11 @@ export class hanhTrangUI extends Component {
     @property(Node)
     private Tab : Node = null;
     start() {
+        // revice event from other
+    }
+    
+    testEvent(msg) {
+        console.log('test event',msg);
     }
 
     private old : string = 'bag';
@@ -114,12 +121,28 @@ export class hanhTrangUI extends Component {
             item.active = true;
             item.name = "item" + i;
             list.addChild(item);
+            item.getComponent(CallBoxItemUI).SetData(i,"bag", "hanhtrang", my.id);
+            /*
             if(ruong[i])
             {
                 ruong[i].source = "bag";
                 let child = find("item",item);
                 child.getComponent(boxItemUI).updateItem(ruong[i]);
             }
+
+             */
+
+            item.addComponent(UIOpacity);
+            let op = item.getComponent(UIOpacity);
+            op.opacity = 0;
+            let from = {x : 0};
+            let to = {x : 255};
+            move(from, to, 0.1 * i, 'easeInSine', null, () => {
+                if(op && op.isValid)
+                {
+                    op.opacity = from.x;
+                }
+            });
 
         }
         layout.updateLayout();
@@ -174,7 +197,7 @@ export class hanhTrangUI extends Component {
             // insert icon
 
             let list = list_skill.filter( (e : any) => e.type === type);
-            list.forEach((element : any) : void => {
+            list.forEach((element : any, index : number) : void => {
                 let mySkill =  my.skill.find(e => e[0] && e[0] == element.id);
                 if(mySkill) {
                     let clone = instantiate(demo_skill);
@@ -199,6 +222,21 @@ export class hanhTrangUI extends Component {
       //  size.height += chiso.length * 5
 
         content.getComponent(UITransform).contentSize = size;
+
+
+        // Update Animation
+        for(let i = 0 ;i < layout.children.length; i++) {
+            let child = layout.children[i];
+            let name = child.name;
+            if(name === 'demo_text' || name === 'demo_skill' || name === "tancong" || name === "bidong" || name==="hotro") continue;
+            let posTo = child.position.clone();
+            let posFrom = posTo.clone();
+            posFrom.x = (i%2 === 0 ? -300 : 300);
+            child.setPosition(posFrom);
+            tween(child)
+                .to(0.3, {position : posTo})
+                .start();
+        }
     }
 
     use():void {
@@ -234,10 +272,17 @@ export class hanhTrangUI extends Component {
                 demo.active = true;
                 item.active = false;
             }
+            child.getComponent(UIOpacity).opacity = 0;
+            let from = {x : 0};
+            let to = {x : 255};
+            move(from, to, 0.5, 'easeInSine', null, () => {
+                child.getComponent(UIOpacity).opacity = from.x;
+            });
         }
 
         for(let child  of tab1.children) {
             xuly(child);
+
         }
 
         let tab2 = find("tab2",top);
@@ -258,7 +303,17 @@ export class hanhTrangUI extends Component {
             if(item) {
                 let label = find("value", item);
                 if(label) {
-                    label.getComponent(Label).string = value;
+                    let coppy = "";
+                    let from = {x : 0};
+                    let to = {x : value.toString().length};
+                    move(from, to, 0.4, 'easeInSine', null, () => {
+                        coppy = animationText(value, from.x) + "|"
+                        if(from.x === to.x) {
+                            coppy = value.toString();
+                        }
+                        label.getComponent(Label).string = coppy;
+                    });
+                    //label.getComponent(Label).string = value;
                 }
             }
         }
@@ -316,6 +371,7 @@ export class hanhTrangUI extends Component {
         let sprite = getSprite();
         if(!sprite) return;
         let my = getSpriteComponent(sprite).my;
+        let i = 0;
         for(let tenthuoctinh of chiso) {
             let tinh : number = my.info.chiso[tenthuoctinh] || 0;
             let goithuoctinh: any = getThuocTinh(tenthuoctinh);
@@ -328,6 +384,19 @@ export class hanhTrangUI extends Component {
             clone.name = tenthuoctinh;
             clone.getComponent(Label).string = text;
             layout.addChild(clone);
+
+            clone.addComponent(UIOpacity);
+            let op = clone.getComponent(UIOpacity);
+            op.opacity = 0;
+            let from = {x : 0};
+            let to = {x : 255};
+            move(from, to, 0.1 * i, 'easeInSine', null, () => {
+                if(op && op.isValid)
+                {
+                    op.opacity = from.x;
+                }
+            });
+            i++;
         }
 
 

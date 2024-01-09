@@ -11,6 +11,9 @@ import {createSprite, getSprite, goto, listPlayer, loadMap, resetAll, updatePos}
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 import {setSkill} from "db://assets/src/views/pages/skills/skillController";
 import {hanhTrangUI} from "db://assets/src/views/UI/hanhTrangUI";
+
+import * as dec from 'db://assets/src/engine/par';
+
 @ccclass('webSocket')
 export class webSocket extends Component {
     private ws: Socket = null;
@@ -24,6 +27,7 @@ export class webSocket extends Component {
                 token : cache.info.token
             },
             transports: [ 'websocket'],
+           // parser: dec,
         });
         this.methodWebsocket();
         this.onMessage()
@@ -520,12 +524,7 @@ export class webSocket extends Component {
                 my.info = info;
                 my.skin = skin;
                 my.ruong = ruong;
-                if(id == cache.my.id) {
-                    let bag = find("UI/box/body/hanhtrang");
-                    if(bag) {
-                        bag.getComponent(hanhTrangUI).bag();
-                    }
-                }
+
             }
         });
 

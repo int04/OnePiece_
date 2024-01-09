@@ -41,6 +41,10 @@ export class boxItemUI extends Component {
             this.avatar.getComponent(Sprite).spriteFrame = await coverSpriteFrame(src);
         }
         else {
+            let checkExitAnimation = this.avatar.getComponent(Animation);
+            if(checkExitAnimation) {
+                this.avatar.removeComponent(Animation);
+            }
             let texture = await coverImg(src);
             let width = texture.width;
             let height = texture.height;

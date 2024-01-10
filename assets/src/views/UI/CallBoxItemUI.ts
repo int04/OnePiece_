@@ -31,11 +31,16 @@ export class CallBoxItemUI extends Component {
             return a.time - b.time;
         });
 
+        let child : Node = find("item",this.node);
+
         if(ruong[this.i]) {
             let clone = JSON.parse(JSON.stringify(ruong[this.i]));
             clone.source = this.source;
-            let child : Node = find("item",this.node);
+            child.active = true;
             child.getComponent(boxItemUI).updateItem(clone);
+        }
+        else {
+            child.active = false;
         }
 
     }

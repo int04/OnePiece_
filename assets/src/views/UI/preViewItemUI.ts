@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, ScrollView, Label, Layout, instantiate, find, UITransform, Button, Sprite, Animation, EventTouch } from 'cc';
+import { input, Input, _decorator, Component, Node, ScrollView, Label, Layout, instantiate, find, UITransform, Button, Sprite, Animation, EventTouch } from 'cc';
 import cache, {_, getThuocTinh} from "db://assets/src/engine/cache";
 import {coverColor, coverImg, coverSpriteFrame} from "db://assets/src/engine/draw";
 import {buttonItemUI} from "db://assets/src/views/UI/buttonItemUI";
@@ -213,6 +213,8 @@ export class preViewItemUI extends Component {
 
     }
 
+    private keyButtonOn : boolean = false;
+
     private xulyButton(): void {
         let content = this.scrollviewButton.content;
         let getLayout = find("Layout",content);
@@ -222,17 +224,84 @@ export class preViewItemUI extends Component {
             if(child.name === 'demo') continue;
             child.destroy();
         }
+
+
         let source = this.source;
 
         let listx = source[this.data.source] || [];
         let list = JSON.parse(JSON.stringify(listx));
         list.push(["dong","Đóng"])
 
+
+        /*Xử lý key input*/
+        let oldID = -1;
+        let setBoard = (idList : number, show : boolean = true) => {
+            let boxItem = find("item_" + idList, getLayout);
+            if(boxItem) {
+                let keybroad = find("keybroad", boxItem);
+                if(keybroad) {
+                    keybroad.active = show;
+                }
+            }
+        }
+        let t2222 = (event) => {
+            let box = list.length;
+            if(this.node.active === false) {
+                input.off(Input.EventType.KEY_UP,t2222, this);
+                this.keyButtonOn  = false;
+                return;
+            }
+            let key = event.keyCode;
+
+            if(key === 13) {
+                let boxItem = find("item_" + oldID, getLayout);
+                if(boxItem) {
+                    let button = boxItem.getComponent(Button);
+                    boxItem.emit(Node.EventType.TOUCH_START);
+                    boxItem.emit(Node.EventType.TOUCH_END);
+                }
+                return;
+            }
+
+            if(oldID >= 0 && oldID < box) {
+                setBoard(oldID, false);
+            }
+            
+            if(key === 37) {
+                oldID--;
+            }
+            else
+            if(key === 39) {
+                oldID++;
+            }
+            else if(key === 40 || key === 38) {
+                this.node.active = false;
+                return;
+            }
+
+            if(oldID < 0) {
+                oldID = box - 1;
+            }
+            else if(oldID >= box) {
+                oldID = 0;
+            }
+
+            setBoard(oldID);
+
+        }
+
+        if(!this.keyButtonOn) {
+            this.keyButtonOn = true;
+            input.on(Input.EventType.KEY_UP,t2222, this);
+        }
+
+        /*end*/
+
         for(let i = 0; i < list.length; i++) {
             let item = list[i];
             let clone = instantiate(find("demo", getLayout));
             clone.active = true;
-            clone.name = "item" + i;
+            clone.name = "item_" + i;
             getLayout.addChild(clone);
             let button = clone.getComponent(Button);
             let label = clone.getComponentInChildren(Label);
@@ -286,7 +355,7 @@ export class preViewItemUI extends Component {
         let world = this.node.worldPosition;
         let clone = world.clone();
         clone.x = point.x + contentSize.width/2;
-        this.node.setWorldPosition(clone);
+        //this.node.setWorldPosition(clone);
 
         let width = cache.game.width;
         if(clone.x + contentSize.width/2 > width) {

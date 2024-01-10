@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, find, Label, ScrollView, Layout, instantiate, UITransform, tween, UIOpacity, EventHandler } from 'cc';
+import { _decorator, Component, Node, find, Label, ScrollView, Layout, instantiate, UITransform, tween, UIOpacity, input, Input, Button, EventTouch } from 'cc';
 import {getSprite, getSpriteComponent} from "db://assets/src/views/pages/MapController";
 import {SpriteController} from "db://assets/src/views/pages/sprite/SpriteController";
 import {boxItemUI} from "db://assets/src/views/UI/boxItemUI";
@@ -86,11 +86,13 @@ export class hanhTrangUI extends Component {
 
     }
 
+    private keyBag : boolean = false;
     bag():void {
         this.hide();
         let node = find("bag", this.node);
         if(!node) return;
         if(node) node.active = true;
+
 
         let scrollview: ScrollView = node.getComponent(ScrollView);
         let content = scrollview.content;
@@ -116,10 +118,91 @@ export class hanhTrangUI extends Component {
             return a.time - b.time;
         });
 
+        let oldID = -1;
+        let setBoard = (idList : number, show : boolean = true) => {
+            let boxItem = find("item_" + idList, list);
+            if(boxItem) {
+                let keybroad = find("keyboard", boxItem);
+                if(keybroad) {
+                    keybroad.active = show;
+                }
+            }
+        }
+        let t = (event) => {
+            if(node.active === false) {
+                input.off(Input.EventType.KEY_UP,t, node);
+                this.keyBag = false;
+                return;
+            }
+            let checkShow = find("UI/previewItem");
+            if(checkShow && checkShow.active == true) return;
+            let key = event.keyCode;
+
+            if(key === 13) {
+                let Item = find("item_" + oldID, list);
+                if(Item) {
+                    let item = find("item", Item);
+                    // submit button
+                    let button = item.getComponent(Button);
+                    if(button) {
+                        item.emit(Node.EventType.TOUCH_START);
+                        item.emit(Node.EventType.TOUCH_END);
+                    }
+
+                }
+                return;
+            }
+
+            if(oldID >= 0 && oldID < box) {
+                setBoard(oldID, false);
+            }
+            if(key === 39) {
+                oldID++;
+            }
+            else if(key === 37) {
+                oldID--;
+            }
+            else if(key === 40) {
+                if(oldID+8 >= box) {
+                    oldID = box - 1;
+                }
+                else
+                {
+                    oldID+=8;
+                }
+            }
+            else if(key === 38) {
+                if(oldID-8 < 0) {
+
+                }
+                else
+                {
+                    oldID-=8;
+                }
+            }
+
+            if(oldID < 0) {
+                oldID = box - 1;
+            }
+            else if(oldID >= box) {
+                oldID = 0;
+            }
+
+            setBoard(oldID);
+
+        }
+
+        // get list event input
+        if(!this.keyBag) {
+            this.keyBag = true;
+            input.on(Input.EventType.KEY_UP,t, node);
+        }
+
+
         for(let i = 0; i < box; i++) {
             let item = instantiate(demo);
             item.active = true;
-            item.name = "item" + i;
+            item.name = "item_" + i;
             list.addChild(item);
             item.getComponent(CallBoxItemUI).SetData(i,"bag", "hanhtrang", my.id);
             /*

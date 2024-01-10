@@ -6,7 +6,7 @@ import {noticeController} from "db://assets/src/views/pages/noticeController";
 export function testUI():void {
     setTimeout(() => {
        let bag = find("UI/box");
-      bag.getComponent(BoxUI).openBag('skill');
+      bag.getComponent(BoxUI).openBag('bag');
     },300);
 }
 

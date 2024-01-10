@@ -528,6 +528,34 @@ export class webSocket extends Component {
             }
         });
 
+
+        this.ws.on("-18", data => {
+            /*
+            * socket.sendMap([
+                    my.id,
+                    type[res],
+                    cong,
+                    my.info.chiso[res],
+                    myItem.soluong,
+                    myItem.id,
+                ],-18);*/
+            let id = data[0];
+            let type = data[1];
+            let cong = data[2];
+            let value = data[3];
+            let soluong = data[4];
+            let idItem = data[5];
+            let getMy = getSprite(id);
+            if(getMy) {
+                let my = getMy.getComponent(SpriteController).my;
+                my.info.chiso[type] = value;
+                my.tien.ruby+=3000;
+                let item = my.ruong.data.find(e => e.id === idItem);
+                if(item)
+                    item.soluong = soluong;
+            }
+        })
+
     }
 
     getObjectMap():void {

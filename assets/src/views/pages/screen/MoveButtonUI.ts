@@ -15,9 +15,9 @@ export class MoveButtonUI extends Component {
 
     start() {
         this.node.active = true;
-        //this.createEvent(this.up, 38);
-       // this.createEvent(this.left, 37);
-        //this.createEvent(this.right, 39);
+        this.createEvent(this.up, 38);
+        this.createEvent(this.left, 37);
+        this.createEvent(this.right, 39);
     }
 
     createEvent(name: Node, key: number): void {
@@ -32,15 +32,19 @@ export class MoveButtonUI extends Component {
     clickOn(event: number, button : Node):void {
         this.gameController.key[event] = true;
 
+        /*
         let animation = button.getComponent(Animation);
         if(animation) {
             animation.play();
         }
 
+         */
+
 
     }
 
     clickOff(event: number, button: Node):void {
+        /*
         let animation = button.getComponent(Animation);
         if(animation) {
             // reset animation
@@ -49,6 +53,8 @@ export class MoveButtonUI extends Component {
             state.sample();
 
         }
+
+         */
 
         this.gameController.key[event] = false;
         delete this.gameController.key[event];

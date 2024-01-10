@@ -117,8 +117,9 @@ export class gameController extends Component {
                 this.timeRoi += deltaTime;
                 if(this.vOld <=0) this.vOld = 1;
                 let v = 9.8 * this.timeRoi + (96*0.8)/2 * this.timeRoi;
+                v = 240 * this.timeRoi;
                 let pos = this.nhanvat.getPosition();
-                pos.y -= v
+                pos.y -= (v*9.8) * deltaTime;
                 this.nhanvat.setPosition(pos);
                 this.nhanvat.getComponent(SpriteController).updateAction('roi');
             }
@@ -312,7 +313,7 @@ export class gameController extends Component {
 
             let current_position = this.camera.getPosition()
             // @ts-ignore 0.04
-            current_position.lerp(target_postion, 3.2 * deltaTime , current_position)
+            current_position.lerp(target_postion, 2.2 * deltaTime , current_position)
             this.camera.setPosition(current_position)
         }
     }
